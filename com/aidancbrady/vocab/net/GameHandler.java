@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -171,6 +172,87 @@ public class GameHandler
 	
 	public static void deleteGame(String friend, int type, GamesPanel panel)
 	{
+		panel.setLoading(true);
 		
+		Socket socket = new Socket();
+		
+		try {
+			socket.connect(new InetSocketAddress(VocabCrack.SERVER_IP, VocabCrack.SERVER_PORT), 5000);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+			
+			writer.println("DELFRIEND:" + VocabCrack.instance().account.username + ":" + friend + ":" + type);
+			writer.flush();
+			
+			String[] response = reader.readLine().trim().split(":");
+			
+			if(response[0].equals("ACCEPT"))
+			{
+				socket.close();
+				panel.setLoading(false);
+				
+				if(type == 0 || type == 2 || type == 3)
+				{
+					for(Iterator<Game> iter = panel.displayedGames.iterator(); iter.hasNext();)
+					{
+						Game g = iter.next();
+						String opponent = g.isRequest ? g.getRequestOpponent() : g.opponent;
+						
+						if(opponent.equals(friend))
+						{
+							iter.remove();
+							break;
+						}
+					}
+					
+					panel.resetList();
+				}
+				else if(type == 1 /*Past*/)
+				{
+					for(Iterator<Game> iter = panel.displayedPast.iterator(); iter.hasNext();)
+					{
+						Game g = iter.next();
+						
+						if(g.opponent.equals(friend))
+						{
+							iter.remove();
+							break;
+						}
+					}
+					
+					panel.resetList();
+				}
+				
+				JOptionPane.showMessageDialog(panel, "Successfully deleted game or request with " + friend);
+				
+				return;
+			}
+			else if(response[0].equals("REJECT"))
+			{
+				socket.close();
+				panel.setLoading(false);
+				
+				JOptionPane.showMessageDialog(panel, "Couldn't process request: " + response[1]);
+				
+				return;
+			}
+			else {
+				socket.close();
+				panel.setLoading(false);
+				
+				JOptionPane.showMessageDialog(panel, "Unable to parse response");
+				
+				return;
+			}
+		} catch(Exception e) {
+			panel.setLoading(false);
+			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
+			
+			try {
+				socket.close();
+			} catch(Exception e1) {}
+		}
 	}
 }

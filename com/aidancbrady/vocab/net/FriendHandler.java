@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.frames.UserDetailsFrame;
 import com.aidancbrady.vocab.frames.NewFriendFrame;
+import com.aidancbrady.vocab.frames.UserDetailsFrame;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 
 public class FriendHandler 
@@ -183,22 +183,35 @@ public class FriendHandler
 				socket.close();
 				panel.setLoading(false);
 				
-				if(type == 0)
+				if(type == 0 || type == 2)
 				{
-					panel.displayedFriends.remove(friend);
-					panel.displayedList.remove(friend);
+					for(Iterator<Account> iter = panel.displayedFriends.iterator(); iter.hasNext();)
+					{
+						Account acct = iter.next();
+						
+						if(acct.username.equals(friend))
+						{
+							iter.remove();
+							break;
+						}
+					}
+					
+					panel.resetList();
 				}
 				else if(type == 1)
 				{
-					panel.displayedRequests.remove(friend);
-					panel.displayedList.remove(friend);
-				}
-				else if(type == 2)
-				{
-					String name = friend.concat(" (Requested)");
+					for(Iterator<Account> iter = panel.displayedRequests.iterator(); iter.hasNext();)
+					{
+						Account acct = iter.next();
+						
+						if(acct.username.equals(friend))
+						{
+							iter.remove();
+							break;
+						}
+					}
 					
-					panel.displayedFriends.remove(name);
-					panel.displayedList.remove(name);
+					panel.resetList();
 				}
 				
 				JOptionPane.showMessageDialog(panel, "Successfully deleted user " + friend);

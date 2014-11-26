@@ -544,7 +544,7 @@ public class GamesPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					newGame();
+					play();
 				}
 			});
 			details.addActionListener(new ActionListener() {
@@ -565,14 +565,14 @@ public class GamesPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					delete(2);
+					newGame();
 				}
 			});
 			remove.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					accept();
+					delete(1);
 				}
 			});
 			cancel.addActionListener(new ActionListener() {
@@ -593,7 +593,7 @@ public class GamesPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					delete(1);
+					delete(3);
 				}
 			});
 			
