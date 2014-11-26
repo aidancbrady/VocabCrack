@@ -92,14 +92,6 @@ public class MenuPanel extends JPanel
 			AvatarHandler.downloadAvatar(VocabCrack.instance().account);
 		} catch(Exception e) {}
 		
-		if(!AvatarHandler.hasAvatar(VocabCrack.instance().account))
-		{
-			welcome.setLocation(16, 16);
-		}
-		else {
-			welcome.setLocation(64, 16);
-		}
-		
 		repaint();
 	}
 	

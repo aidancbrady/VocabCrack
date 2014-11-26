@@ -18,6 +18,8 @@ public class AvatarHandler
 {
 	public static File avatarDir = new File(getHomeDirectory() + File.separator + "Documents" + File.separator + "VocabCrack" + File.separator + "Temp");
 	
+	private static Texture defaultAvatar = Texture.load("user.png");
+	
 	private static Map<String, Texture> gravatars = new HashMap<String, Texture>();
 	
 	private static Set<String> downloading = new HashSet<String>();
@@ -33,7 +35,7 @@ public class AvatarHandler
 				new AvatarDownload(acct).start();
 			}
 			
-			return null;
+			return defaultAvatar;
 		}
 		else {
 			return gravatars.get(acct.email);
