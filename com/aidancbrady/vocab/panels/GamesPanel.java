@@ -1,5 +1,6 @@
 package com.aidancbrady.vocab.panels;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -35,7 +36,7 @@ public class GamesPanel extends JPanel
 	
 	public JTextField searchField;
 	
-	public JList gamesList;
+	public JList<Game> gamesList;
 	
 	public JButton gamesButton;
 	public JButton pastButton;
@@ -80,7 +81,7 @@ public class GamesPanel extends JPanel
 		searchField.addActionListener(new SearchListener());
 		add(searchField);
 		
-		gamesList = new JList();
+		gamesList = new JList<Game>();
 		gamesList.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -106,6 +107,7 @@ public class GamesPanel extends JPanel
 		gamesList.setFocusable(true);
 		gamesList.setEnabled(true);
 		gamesList.setSelectionInterval(1, 1);
+		gamesList.setCellRenderer(new GameCellRenderer());
 		gamesList.setToolTipText("Games in progress and past games");
 		JScrollPane onlinePane = new JScrollPane(gamesList);
 		onlinePane.setSize(new Dimension(400, 250));
@@ -471,6 +473,10 @@ public class GamesPanel extends JPanel
 	
 	public class GameCellRenderer extends JLabel implements ListCellRenderer<Game>
 	{
+		private static final long serialVersionUID = 1L;
+		
+		private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+
 		public GameCellRenderer() 
 		{
 			setOpaque(true);
@@ -498,9 +504,14 @@ public class GamesPanel extends JPanel
 				setText(value.user + " - " + msg);
 			}
 			
-			if(isSelected)
+			if(isSelected) 
 			{
-				
+				setBackground(HIGHLIGHT_COLOR);
+				setForeground(Color.white);
+			} 
+			else {
+				setBackground(Color.white);
+				setForeground(Color.black);
 			}
 			
 			return this;

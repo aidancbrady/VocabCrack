@@ -10,9 +10,17 @@ public class Account
 	
 	public String password;
 	
+	public boolean isRequest;
+	
 	public int gamesWon;
 	
 	public int gamesLost;
+	
+	public Account(String user, boolean request)
+	{
+		username = user;
+		isRequest = request;
+	}
 	
 	public Account(String user, String em, String pass)
 	{

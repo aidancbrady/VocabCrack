@@ -1,5 +1,7 @@
 package com.aidancbrady.vocab.panels;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -17,13 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import com.aidancbrady.vocab.frames.DetailsFrame;
+import com.aidancbrady.vocab.Account;
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.FriendHandler;
+import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class FriendsPanel extends JPanel
 {
@@ -33,7 +39,7 @@ public class FriendsPanel extends JPanel
 	
 	public JTextField searchField;
 	
-	public JList friendsList;
+	public JList<Account> friendsList;
 	
 	public JButton friendsButton;
 	public JButton requestsButton;
@@ -49,10 +55,10 @@ public class FriendsPanel extends JPanel
 	
 	public boolean mode = true;
 	
-	public Vector<String> displayedFriends = new Vector<String>();
-	public Vector<String> displayedRequests = new Vector<String>();
+	public Vector<Account> displayedFriends = new Vector<Account>();
+	public Vector<Account> displayedRequests = new Vector<Account>();
 	
-	public Vector<String> displayedList = new Vector<String>();
+	public Vector<Account> displayedList = new Vector<Account>();
 	
 	public boolean isLoading;
 	
@@ -78,7 +84,7 @@ public class FriendsPanel extends JPanel
 		searchField.addActionListener(new SearchListener());
 		add(searchField);
 		
-		friendsList = new JList();
+		friendsList = new JList<Account>();
 		friendsList.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -104,6 +110,7 @@ public class FriendsPanel extends JPanel
 		friendsList.setFocusable(true);
 		friendsList.setEnabled(true);
 		friendsList.setSelectionInterval(1, 1);
+		friendsList.setCellRenderer(new AccountCellRenderer());
 		friendsList.setToolTipText("Friends that have you on their list");
 		JScrollPane onlinePane = new JScrollPane(friendsList);
 		onlinePane.setSize(new Dimension(400, 250));
@@ -260,7 +267,7 @@ public class FriendsPanel extends JPanel
 				{
 					if(mode)
 					{
-						type = displayedList.get(row).contains("(Requested)") ? 2 : 0;
+						type = displayedList.get(row).isRequest ? 2 : 0;
 					}
 					else {
 						type = 1;
@@ -296,10 +303,10 @@ public class FriendsPanel extends JPanel
 		
 		if(mode)
 		{
-			displayedList = (Vector<String>)displayedFriends;
+			displayedList = (Vector<Account>)displayedFriends;
 		}
 		else {
-			displayedList = (Vector<String>)displayedRequests;
+			displayedList = (Vector<Account>)displayedRequests;
 		}
 		
 		friendsList.setListData(displayedList);
@@ -346,31 +353,31 @@ public class FriendsPanel extends JPanel
 				{
 					if(!query.isEmpty())
 					{
-						for(String s : displayedFriends)
+						for(Account a : displayedFriends)
 						{
-							if(s.replace(" (Requested)", "").toLowerCase().contains(query))
+							if(a.username.toLowerCase().contains(query))
 							{
-								displayedList.add(s);
+								displayedList.add(a);
 							}
 						}
 					}
 					else {
-						displayedList = (Vector<String>)displayedFriends.clone();
+						displayedList = (Vector<Account>)displayedFriends.clone();
 					}
 				}
 				else {
 					if(!query.isEmpty())
 					{
-						for(String s : displayedRequests)
+						for(Account a : displayedRequests)
 						{
-							if(s.toLowerCase().contains(query))
+							if(a.username.toLowerCase().contains(query))
 							{
-								displayedList.add(s);
+								displayedList.add(a);
 							}
 						}
 					}
 					else {
-						displayedList = (Vector<String>)displayedRequests.clone();
+						displayedList = (Vector<Account>)displayedRequests.clone();
 					}
 				}
 			}
@@ -381,13 +388,13 @@ public class FriendsPanel extends JPanel
 	{
 		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String name = displayedList.get(friendsList.getSelectedIndex());
+			Account a = displayedList.get(friendsList.getSelectedIndex());
 			
 			if(mode)
 			{
-				if(!name.contains("(Requested)"))
+				if(!a.isRequest)
 				{
-					frame.openDetails(name);
+					frame.openDetails(a.username);
 				}
 			}
 		}
@@ -397,19 +404,19 @@ public class FriendsPanel extends JPanel
 	{
 		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String name = displayedList.get(friendsList.getSelectedIndex());
+			Account a = displayedList.get(friendsList.getSelectedIndex());
 			
 			if(mode)
 			{
-				if(!name.contains("(Requested)"))
+				if(!a.isRequest)
 				{
-					if(JOptionPane.showConfirmDialog(FriendsPanel.this, "Start a game with " + name + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
+					if(JOptionPane.showConfirmDialog(FriendsPanel.this, "Start a game with " + a.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 					{
 						//Start new game
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(FriendsPanel.this, "User " + name.replace(" (Requested)", "") + " has not yet accepted your request.");
+					JOptionPane.showMessageDialog(FriendsPanel.this, "User " + a.username + " has not yet accepted your request.");
 				}
 			}
 		}
@@ -419,14 +426,14 @@ public class FriendsPanel extends JPanel
 	{
 		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String name = displayedList.get(friendsList.getSelectedIndex());
+			Account a = displayedList.get(friendsList.getSelectedIndex());
 			
-			String msg = type == 0 ? "Are you sure you want to delete " + name + "?" : (type == 1 ? "Are you sure you want to ignore " + name + "'s request?" : 
-				"Are you sure you want to cancel your request to " + name + "?");
+			String msg = type == 0 ? "Are you sure you want to delete " + a.username + "?" : (type == 1 ? "Are you sure you want to ignore " + a.username + "'s request?" : 
+				"Are you sure you want to cancel your request to " + a.username + "?");
 			
 			if(JOptionPane.showConfirmDialog(FriendsPanel.this, msg, "Confirm Deletion", JOptionPane.YES_NO_OPTION) == 0)
 			{
-				FriendHandler.deleteFriend(name.replace(" (Requested)", ""), type, FriendsPanel.this);
+				FriendHandler.deleteFriend(a.username, type, FriendsPanel.this);
 			}
 		}
 	}
@@ -435,15 +442,62 @@ public class FriendsPanel extends JPanel
 	{
 		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String name = displayedList.get(friendsList.getSelectedIndex());
+			Account a = displayedList.get(friendsList.getSelectedIndex());
 			
 			if(!mode)
 			{
-				if(JOptionPane.showConfirmDialog(FriendsPanel.this, "Accept request from " + name + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
+				if(JOptionPane.showConfirmDialog(FriendsPanel.this, "Accept request from " + a.username + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
 				{
-					FriendHandler.acceptRequest(name, FriendsPanel.this);
+					FriendHandler.acceptRequest(a.username, FriendsPanel.this);
 				}
 			}
+		}
+	}
+	
+	public class AccountCellRenderer extends JLabel implements ListCellRenderer<Account>
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+
+		public AccountCellRenderer() 
+		{
+			setOpaque(true);
+			setIconTextGap(12);
+		}
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends Account> list, Account value, int index, boolean isSelected, boolean cellHasFocus)
+		{
+			if(mode)
+			{
+				if(value.isRequest)
+				{
+					setText(value.username + " (Requested)");
+				}
+				else {
+					setText(value.username);
+				}
+			}
+			else {
+				setText(value.username);
+			}
+			
+			try {
+				setIcon(Utilities.scaleImage(new ImageIcon(AvatarHandler.downloadAvatar(value).img), 32, 32));
+			} catch(Exception e) {}
+			
+			if(isSelected) 
+			{
+				setBackground(HIGHLIGHT_COLOR);
+				setForeground(Color.white);
+			} 
+			else {
+				setBackground(Color.white);
+				setForeground(Color.black);
+			}
+			
+			return this;
 		}
 	}
 	
@@ -511,6 +565,7 @@ public class FriendsPanel extends JPanel
 			}
 			else if(type == 1 /*Request*/)
 			{
+				add(accept);
 				add(ignore);
 			}
 			else if(type == 2 /*Requested*/)

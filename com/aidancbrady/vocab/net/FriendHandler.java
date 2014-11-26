@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -49,16 +50,17 @@ public class FriendHandler
 				socket.close();
 				panel.setLoading(false);
 				
-				Vector<String> vec = new Vector<String>();
+				Vector<Account> vec = new Vector<Account>();
 				
 				for(int i = 1; i < response.length; i++)
 				{
-					vec.add(response[i]);
+					String[] split = response[i].split(",");
+					vec.add(new Account(split[0], false).setEmail(split[1]));
 				}
 				
 				for(int i = 1; i < response1.length; i++)
 				{
-					vec.add(response1[i] + " (Requested)");
+					vec.add(new Account(response1[i], true));
 				}
 				
 				panel.displayedFriends = vec;
@@ -117,11 +119,12 @@ public class FriendHandler
 				socket.close();
 				panel.setLoading(false);
 				
-				Vector<String> vec = new Vector<String>();
+				Vector<Account> vec = new Vector<Account>();
 				
 				for(int i = 1; i < response.length; i++)
 				{
-					vec.add(response[i]);
+					String[] split = response[i].split(",");
+					vec.add(new Account(split[0], false).setEmail(split[1]));
 				}
 				
 				panel.displayedRequests = vec;
@@ -331,8 +334,18 @@ public class FriendHandler
 				socket.close();
 				frame.setLoading(false);
 				
-				frame.frame.friends.displayedFriends.remove(friend + " (Requested)");
-				frame.frame.friends.displayedFriends.add(friend + " (Requested)");
+				for(Iterator<Account> iter = frame.frame.friends.displayedFriends.iterator(); iter.hasNext();)
+				{
+					Account acct = iter.next();
+					
+					if(acct.username.equals(friend))
+					{
+						iter.remove();
+						break;
+					}
+				}
+				
+				frame.frame.friends.displayedFriends.add(new Account(friend, true));
 				frame.frame.friends.resetList();
 				
 				frame.setVisible(false);
@@ -391,8 +404,19 @@ public class FriendHandler
 				socket.close();
 				panel.setLoading(false);
 				
-				panel.displayedFriends.add(friend);
-				panel.displayedRequests.remove(friend);
+				panel.displayedFriends.add(new Account(friend, false));
+				
+				for(Iterator<Account> iter = panel.displayedRequests.iterator(); iter.hasNext();)
+				{
+					Account acct = iter.next();
+					
+					if(acct.username.equals(friend))
+					{
+						iter.remove();
+						break;
+					}
+				}
+				
 				panel.resetList();
 				
 				JOptionPane.showMessageDialog(panel, "You are now friends with " + friend + "!");

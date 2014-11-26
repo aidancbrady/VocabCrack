@@ -28,6 +28,11 @@ public class AvatarHandler
 	
 	public static Texture downloadAvatar(Account acct) throws Exception
 	{
+		if(acct.email == null || acct.email.isEmpty())
+		{
+			return defaultAvatar;
+		}
+		
 		if(!gravatars.containsKey(acct.email))
 		{
 			if(!downloading.contains(acct.email))
@@ -83,6 +88,8 @@ public class AvatarHandler
 					gravatars.put(acct.email, tex);
 					
 					VocabCrack.instance().frame.menu.setAccountData();
+					VocabCrack.instance().frame.friends.repaint();
+					VocabCrack.instance().frame.friends.friendsList.repaint();
 					VocabCrack.instance().frame.detailsFrame.setAccountData();
 				}
 			} catch(Exception e) {}
