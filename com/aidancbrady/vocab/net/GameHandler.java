@@ -167,7 +167,73 @@ public class GameHandler
 	
 	public static void acceptRequest(String friend, GamesPanel panel)
 	{
+		panel.setLoading(true);
 		
+		Socket socket = new Socket();
+		
+		try {
+			socket.connect(new InetSocketAddress(VocabCrack.SERVER_IP, VocabCrack.SERVER_PORT), 5000);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+			
+			writer.println("GAMEREQCONF:" + VocabCrack.instance().account.username + ":" + friend);
+			writer.flush();
+			
+			String[] response = reader.readLine().trim().split(":");
+			
+			if(response[0].equals("ACCEPT"))
+			{
+				socket.close();
+				panel.setLoading(false);
+				
+				Game found = null;
+				
+				for(Iterator<Game> iter = panel.displayedGames.iterator(); iter.hasNext();)
+				{
+					Game g = iter.next();
+					String opponent = g.isRequest ? g.getRequestOpponent() : g.opponent;
+					
+					if(opponent.equals(friend))
+					{
+						found = g;
+						iter.remove();
+						break;
+					}
+				}
+				
+				panel.displayedGames.add(found.convertToActive());
+				panel.resetList();
+				
+				JOptionPane.showMessageDialog(panel, "You are now friends with " + friend + "!");
+				
+				return;
+			}
+			else if(response[0].equals("REJECT"))
+			{
+				socket.close();
+				panel.setLoading(false);
+				
+				JOptionPane.showMessageDialog(panel, "Couldn't process request: " + response[1]);
+				
+				return;
+			}
+			else {
+				socket.close();
+				panel.setLoading(false);
+				
+				JOptionPane.showMessageDialog(panel, "Unable to parse response");
+				
+				return;
+			}
+		} catch(Exception e) {
+			panel.setLoading(false);
+			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			
+			try {
+				socket.close();
+			} catch(Exception e1) {}
+		}
 	}
 	
 	public static void deleteGame(String friend, int type, GamesPanel panel, Integer... index)
@@ -210,17 +276,7 @@ public class GameHandler
 				}
 				else if(type == 1 /*Past*/)
 				{
-					for(Iterator<Game> iter = panel.displayedPast.iterator(); iter.hasNext();)
-					{
-						Game g = iter.next();
-						
-						if(g.opponent.equals(friend))
-						{
-							iter.remove();
-							break;
-						}
-					}
-					
+					panel.displayedPast.remove(index[0]);
 					panel.resetList();
 				}
 				
