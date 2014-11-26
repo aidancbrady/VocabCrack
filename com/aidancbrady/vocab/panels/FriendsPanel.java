@@ -342,13 +342,13 @@ public class FriendsPanel extends JPanel
 			{
 				displayedList.clear();
 				
-				if(!friendsButton.isEnabled())
+				if(mode)
 				{
 					if(!query.isEmpty())
 					{
 						for(String s : displayedFriends)
 						{
-							if(s.toLowerCase().contains(query))
+							if(s.replace(" (Requested)", "").toLowerCase().contains(query))
 							{
 								displayedList.add(s);
 							}
@@ -363,7 +363,7 @@ public class FriendsPanel extends JPanel
 					{
 						for(String s : displayedRequests)
 						{
-							if(s.replace(" (Requested)", "").toLowerCase().contains(query))
+							if(s.toLowerCase().contains(query))
 							{
 								displayedList.add(s);
 							}

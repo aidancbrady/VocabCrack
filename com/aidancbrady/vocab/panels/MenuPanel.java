@@ -112,7 +112,7 @@ public class MenuPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) 
 		{
-			
+			frame.openGames();
 		}
 	}
 	

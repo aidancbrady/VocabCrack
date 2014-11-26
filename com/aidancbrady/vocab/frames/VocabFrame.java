@@ -5,7 +5,9 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
+import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.panels.FriendsPanel;
+import com.aidancbrady.vocab.panels.GamesPanel;
 import com.aidancbrady.vocab.panels.LoginPanel;
 import com.aidancbrady.vocab.panels.MenuPanel;
 import com.aidancbrady.vocab.panels.RegisterPanel;
@@ -18,6 +20,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	public RegisterPanel register;
 	public MenuPanel menu;
 	public FriendsPanel friends;
+	public GamesPanel games;
 	
 	public NewFriendFrame newFrame;
 	public DetailsFrame detailsFrame;
@@ -36,6 +39,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		add(register = new RegisterPanel(this)).setVisible(false);
 		add(menu = new MenuPanel(this)).setVisible(false);
 		add(friends = new FriendsPanel(this)).setVisible(false);
+		add(games = new GamesPanel(this)).setVisible(false);
 	}
 	
 	public void openLogin()
@@ -44,6 +48,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		register.setVisible(false);
 		menu.setVisible(false);
 		friends.setVisible(false);
+		games.setVisible(false);
 	}
 	
 	public void openRegister()
@@ -52,6 +57,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		register.setVisible(true);
 		menu.setVisible(false);
 		friends.setVisible(false);
+		games.setVisible(false);
 	}
 	
 	public void openMenu()
@@ -60,6 +66,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		register.setVisible(false);
 		menu.setVisible(true);
 		friends.setVisible(false);
+		games.setVisible(false);
 	}
 	
 	public void openFriends()
@@ -68,6 +75,16 @@ public class VocabFrame extends JFrame implements WindowListener
 		register.setVisible(false);
 		menu.setVisible(false);
 		friends.setVisible(true);
+		games.setVisible(false);
+	}
+	
+	public void openGames()
+	{
+		login.setVisible(false);
+		register.setVisible(false);
+		menu.setVisible(false);
+		friends.setVisible(false);
+		games.setVisible(true);
 	}
 	
 	public void openNewFriend()
@@ -93,6 +110,11 @@ public class VocabFrame extends JFrame implements WindowListener
 		}
 		
 		detailsFrame.open(username);
+	}
+	
+	public void openDetails(Game g)
+	{
+		
 	}
 	
 	@Override
