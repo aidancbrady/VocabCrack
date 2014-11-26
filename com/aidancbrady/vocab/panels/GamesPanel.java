@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -25,8 +26,10 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import com.aidancbrady.vocab.Game;
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.GameHandler;
+import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class GamesPanel extends JPanel
 {
@@ -503,6 +506,10 @@ public class GamesPanel extends JPanel
 				msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
 				setText(value.user + " - " + msg);
 			}
+			
+			try {
+				setIcon(Utilities.scaleImage(new ImageIcon(AvatarHandler.downloadAvatar(value.opponentEmail).img), 32, 32));
+			} catch(Exception e) {}
 			
 			if(isSelected) 
 			{

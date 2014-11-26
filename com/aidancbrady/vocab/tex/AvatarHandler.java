@@ -26,25 +26,30 @@ public class AvatarHandler
 	
 	private static final Gravatar gravatar = new Gravatar();
 	
-	public static Texture downloadAvatar(Account acct) throws Exception
+	public static Texture downloadAvatar(String email) throws Exception
 	{
-		if(acct.email == null || acct.email.isEmpty())
+		if(email == null || email.isEmpty())
 		{
 			return defaultAvatar;
 		}
 		
-		if(!gravatars.containsKey(acct.email))
+		if(!gravatars.containsKey(email))
 		{
-			if(!downloading.contains(acct.email))
+			if(!downloading.contains(email))
 			{
-				new AvatarDownload(acct).start();
+				new AvatarDownload(email).start();
 			}
 			
 			return defaultAvatar;
 		}
 		else {
-			return gravatars.get(acct.email);
+			return gravatars.get(email);
 		}
+	}
+	
+	public static Texture downloadAvatar(Account acct) throws Exception
+	{
+		return downloadAvatar(acct.email);
 	}
 	
 	public static boolean hasAvatar(Account acct)
@@ -64,28 +69,28 @@ public class AvatarHandler
 	
 	public static class AvatarDownload extends Thread
 	{
-		public Account acct;
+		public String email;
 		
-		public AvatarDownload(Account a)
+		public AvatarDownload(String em)
 		{
-			acct = a;
+			email = em;
 			setDaemon(true);
 		}
 		
 		@Override
 		public void run()
 		{
-			downloading.add(acct.email);
+			downloading.add(email);
 			
 			try {
 				gravatar.setSize(256);
 				
-				byte[] download = gravatar.download(acct.email);
+				byte[] download = gravatar.download(email);
 				
 				if(download != null && download.length > 0)
 				{
 					Texture tex = new Texture(ImageIO.read(new ByteArrayInputStream(download)));
-					gravatars.put(acct.email, tex);
+					gravatars.put(email, tex);
 					
 					VocabCrack.instance().frame.menu.setAccountData();
 					VocabCrack.instance().frame.friends.repaint();
@@ -94,7 +99,7 @@ public class AvatarHandler
 				}
 			} catch(Exception e) {}
 			
-			downloading.remove(acct.email);
+			downloading.remove(email);
 		}
 	}
 }
