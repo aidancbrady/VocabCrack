@@ -1,4 +1,4 @@
-package com.aidancbrady.vocab;
+package com.aidancbrady.vocab.frames;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.aidancbrady.vocab.Account;
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.net.FriendHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 

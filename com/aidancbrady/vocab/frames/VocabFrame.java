@@ -1,4 +1,4 @@
-package com.aidancbrady.vocab;
+package com.aidancbrady.vocab.frames;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

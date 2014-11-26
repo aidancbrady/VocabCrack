@@ -2,6 +2,8 @@ package com.aidancbrady.vocab;
 
 import javax.swing.SwingUtilities;
 
+import com.aidancbrady.vocab.frames.VocabFrame;
+
 public class VocabCrack 
 {
 	private static VocabCrack instance = new VocabCrack();

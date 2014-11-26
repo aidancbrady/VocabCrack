@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.VocabFrame;
+import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 import com.aidancbrady.vocab.tex.Texture;
 

@@ -10,9 +10,9 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.Account;
-import com.aidancbrady.vocab.DetailsFrame;
-import com.aidancbrady.vocab.NewFriendFrame;
 import com.aidancbrady.vocab.VocabCrack;
+import com.aidancbrady.vocab.frames.DetailsFrame;
+import com.aidancbrady.vocab.frames.NewFriendFrame;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 
 public class FriendHandler 

@@ -13,7 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-import com.aidancbrady.vocab.VocabFrame;
+import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.RegisterHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
