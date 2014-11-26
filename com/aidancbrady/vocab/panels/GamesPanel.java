@@ -405,7 +405,7 @@ public class GamesPanel extends JPanel
 			{
 				if(!g.isRequest)
 				{
-					frame.openDetails(g);
+					frame.openGameDetails(g.opponent);
 				}
 			}
 		}

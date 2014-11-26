@@ -395,7 +395,7 @@ public class FriendsPanel extends JPanel
 			{
 				if(!a.isRequest)
 				{
-					frame.openDetails(a.username);
+					frame.openUserDetails(a.username);
 				}
 			}
 		}

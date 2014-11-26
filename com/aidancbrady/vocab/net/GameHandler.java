@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.VocabCrack;
+import com.aidancbrady.vocab.frames.GameDetailsFrame;
 import com.aidancbrady.vocab.panels.GamesPanel;
 
 public class GameHandler 
@@ -357,5 +358,10 @@ public class GameHandler
 		}
 		
 		return false;
+	}
+	
+	public static void getInfo(String username, GameDetailsFrame frame)
+	{
+		
 	}
 }

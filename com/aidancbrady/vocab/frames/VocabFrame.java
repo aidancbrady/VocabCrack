@@ -100,7 +100,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		}
 	}
 	
-	public void openDetails(String username)
+	public void openUserDetails(String username)
 	{
 		if(userDetailsFrame == null)
 		{
@@ -113,7 +113,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		userDetailsFrame.open(username);
 	}
 	
-	public void openDetails(Game g)
+	public void openGameDetails(String opponent)
 	{
 		
 	}

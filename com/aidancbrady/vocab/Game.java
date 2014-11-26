@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Game 
 {
+	public static final Game DEFAULT = new Game("Guest", "Guest");
+	
 	/** If this is an active or past game, this represents the active user. 
 	 * If this is a request, this represents the user that requested the game. 
 	 * */
