@@ -26,6 +26,7 @@ public class RegisterPanel extends JPanel
 	public VocabFrame frame;
 	
 	public JTextField usernameField;
+	public JTextField emailField;
 	public JTextField passwordField;
 	public JTextField confirmField;
 	
@@ -64,19 +65,25 @@ public class RegisterPanel extends JPanel
 		JLabel user = new JLabel("Username:");
 		user.setVisible(true);
 		user.setSize(200, 40);
-		user.setLocation(40, 192);
+		user.setLocation(41, 192);
 		add(user);
+		
+		JLabel em = new JLabel("Email:");
+		em.setVisible(true);
+		em.setSize(200, 40);
+		em.setLocation(69, 232);
+		add(em);
 		
 		JLabel pass = new JLabel("Password:");
 		pass.setVisible(true);
 		pass.setSize(200, 40);
-		pass.setLocation(44, 232);
+		pass.setLocation(44, 272);
 		add(pass);
 		
 		JLabel confirm = new JLabel("Confirm:");
 		confirm.setVisible(true);
 		confirm.setSize(200, 40);
-		confirm.setLocation(52, 272);
+		confirm.setLocation(52, 312);
 		add(confirm);
 		
 		usernameField = new JTextField();
@@ -86,25 +93,32 @@ public class RegisterPanel extends JPanel
 		usernameField.setLocation(110, 200);
 		add(usernameField);
 		
+		emailField = new JTextField();
+		emailField.setFocusable(true);
+		emailField.setText("");
+		emailField.setSize(new Dimension(240, 28));
+		emailField.setLocation(110, 240);
+		add(emailField);
+		
 		passwordField = new JPasswordField();
 		passwordField.setFocusable(true);
 		passwordField.setText("");
 		passwordField.setSize(new Dimension(240, 28));
-		passwordField.setLocation(110, 240);
+		passwordField.setLocation(110, 280);
 		add(passwordField);
 		
 		confirmField = new JPasswordField();
 		confirmField.setFocusable(true);
 		confirmField.setText("");
 		confirmField.setSize(new Dimension(240, 28));
-		confirmField.setLocation(110, 280);
+		confirmField.setLocation(110, 320);
 		confirmField.addActionListener(new RegisterButtonListener());
 		add(confirmField);
 		
 		progressBar = new JProgressBar();
 		progressBar.setIndeterminate(true);
 		progressBar.setSize(240, 40);
-		progressBar.setLocation(80, 320);
+		progressBar.setLocation(80, 360);
 		progressBar.setVisible(false);
 		add(progressBar);
 		

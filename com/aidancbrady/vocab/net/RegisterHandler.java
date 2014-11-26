@@ -16,11 +16,18 @@ public class RegisterHandler
 	public static void register(RegisterPanel panel)
 	{
 		String username = panel.usernameField.getText().trim();
+		String email = panel.emailField.getText().trim();
 		String password = panel.passwordField.getText().trim();
 		
 		if(username.isEmpty())
 		{
 			JOptionPane.showMessageDialog(panel, "No username entered.");
+			return;
+		}
+		
+		if(email.isEmpty())
+		{
+			JOptionPane.showMessageDialog(panel, "No email entered.");
 			return;
 		}
 		
@@ -36,7 +43,7 @@ public class RegisterHandler
 			return;
 		}
 		
-		if(username.contains(",") || username.contains(":") || password.contains(",") || password.contains(":"))
+		if(username.contains(",") || username.contains(":") || email.contains(",") || email.contains(":") || password.contains(",") || password.contains(":"))
 		{
 			JOptionPane.showMessageDialog(panel, "Invalid characters.");
 			return;
@@ -52,7 +59,7 @@ public class RegisterHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("REGISTER:" + username + "," + password);
+			writer.println("REGISTER:" + username + "," + email + "," + password);
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");
