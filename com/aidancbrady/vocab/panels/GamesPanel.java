@@ -434,7 +434,13 @@ public class GamesPanel extends JPanel
 			{
 				if(JOptionPane.showConfirmDialog(GamesPanel.this, "Start a game with " + name + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 				{
-					//Start new game
+					if(GameHandler.confirmGame(name, this))
+					{
+						//New game
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "Unable to authenticate");
+					}
 				}
 			}
 		}

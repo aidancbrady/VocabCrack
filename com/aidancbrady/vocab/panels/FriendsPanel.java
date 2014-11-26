@@ -29,6 +29,7 @@ import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.FriendHandler;
+import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class FriendsPanel extends JPanel
@@ -410,9 +411,15 @@ public class FriendsPanel extends JPanel
 			{
 				if(!a.isRequest)
 				{
-					if(JOptionPane.showConfirmDialog(FriendsPanel.this, "Start a game with " + a.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
+					if(JOptionPane.showConfirmDialog(this, "Start a game with " + a.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 					{
-						//Start new game
+						if(GameHandler.confirmGame(a.username, this))
+						{
+							//New game
+						}
+						else {
+							JOptionPane.showMessageDialog(this, "Unable to authenticate");
+						}
 					}
 				}
 				else {

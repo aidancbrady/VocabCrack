@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.net.FriendHandler;
+import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class UserDetailsFrame extends JFrame
@@ -73,8 +74,14 @@ public class UserDetailsFrame extends JFrame
 			{
 				if(JOptionPane.showConfirmDialog(UserDetailsFrame.this, "Start a game with " + acct.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 				{
-					setVisible(false);
-					//Start new game
+					if(GameHandler.confirmGame(acct.username, frame.friends))
+					{
+						setVisible(false);
+						//New game
+					}
+					else {
+						JOptionPane.showMessageDialog(frame.friends, "Unable to authenticate");
+					}
 				}
 
 			}

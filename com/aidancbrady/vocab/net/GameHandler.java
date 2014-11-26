@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.panels.GamesPanel;
@@ -310,5 +310,52 @@ public class GameHandler
 				socket.close();
 			} catch(Exception e1) {}
 		}
+	}
+	
+	public static boolean confirmGame(String friend, JPanel panel)
+	{
+		Socket socket = new Socket();
+		
+		try {
+			socket.connect(new InetSocketAddress(VocabCrack.SERVER_IP, VocabCrack.SERVER_PORT), 5000);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+			
+			writer.println("CONFGAME:" + VocabCrack.instance().account.username + ":" + friend);
+			writer.flush();
+			
+			String[] response = reader.readLine().trim().split(":");
+			
+			if(response[0].equals("ACCEPT"))
+			{
+				socket.close();
+				
+				return true;
+			}
+			else if(response[0].equals("REJECT"))
+			{
+				socket.close();
+				
+				JOptionPane.showMessageDialog(panel, "Couldn't process request: " + response[1]);
+				
+				return false;
+			}
+			else {
+				socket.close();
+				
+				JOptionPane.showMessageDialog(panel, "Unable to parse response");
+				
+				return false;
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			
+			try {
+				socket.close();
+			} catch(Exception e1) {}
+		}
+		
+		return false;
 	}
 }
