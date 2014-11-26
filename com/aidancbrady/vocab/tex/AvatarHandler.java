@@ -1,22 +1,26 @@
 package com.aidancbrady.vocab.tex;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
 import jgravatar.Gravatar;
 
 import com.aidancbrady.vocab.Account;
+import com.aidancbrady.vocab.VocabCrack;
 
 public class AvatarHandler 
 {
-	public static File avatarDir = new File(getHomeDirectory() + File.separator + "Documents" + File.separator + "VocabServer" + File.separator + "Data");
+	public static File avatarDir = new File(getHomeDirectory() + File.separator + "Documents" + File.separator + "VocabCrack" + File.separator + "Temp");
 	
 	private static Map<String, Texture> gravatars = new HashMap<String, Texture>();
+	
+	private static Set<String> downloading = new HashSet<String>();
 	
 	private static final Gravatar gravatar = new Gravatar();
 	
@@ -24,16 +28,9 @@ public class AvatarHandler
 	{
 		if(!gravatars.containsKey(acct.email))
 		{
-			gravatar.setSize(256);
-			
-			byte[] download = gravatar.download(acct.email);
-			
-			if(download != null && download.length > 0)
+			if(!downloading.contains(acct.email))
 			{
-				Texture tex = new Texture(ImageIO.read(new ByteArrayInputStream(download)));
-				gravatars.put(acct.email, tex);
-				
-				return tex;
+				new AvatarDownload(acct).start();
 			}
 			
 			return null;
@@ -56,5 +53,38 @@ public class AvatarHandler
 	public static String getHomeDirectory()
 	{
 		return System.getProperty("user.home");
+	}
+	
+	public static class AvatarDownload extends Thread
+	{
+		public Account acct;
+		
+		public AvatarDownload(Account a)
+		{
+			acct = a;
+			setDaemon(true);
+		}
+		
+		@Override
+		public void run()
+		{
+			downloading.add(acct.email);
+			
+			try {
+				gravatar.setSize(256);
+				
+				byte[] download = gravatar.download(acct.email);
+				
+				if(download != null && download.length > 0)
+				{
+					Texture tex = new Texture(ImageIO.read(new ByteArrayInputStream(download)));
+					gravatars.put(acct.email, tex);
+					
+					VocabCrack.instance().frame.menu.setAccountData();
+				}
+			} catch(Exception e) {}
+			
+			downloading.remove(acct.email);
+		}
 	}
 }

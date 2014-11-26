@@ -84,7 +84,7 @@ public class MenuPanel extends JPanel
 		add(copyright);
 	}
 	
-	public void setAccount()
+	public void setAccountData()
 	{
 		welcome.setText("Welcome, " + VocabCrack.instance().account.username + "!");
 		

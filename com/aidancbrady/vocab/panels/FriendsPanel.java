@@ -15,7 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -35,14 +34,13 @@ public class FriendsPanel extends JPanel
 	
 	public JList friendsList;
 	
-	public JProgressBar progressBar;
-	
 	public JButton friendsButton;
 	public JButton requestsButton;
 	public JButton backButton;
 	public JButton refreshButton;
 	public JButton searchButton;
 	public JButton newButton;
+	public JButton newGameButton;
 	
 	public JLabel title;
 	
@@ -89,7 +87,7 @@ public class FriendsPanel extends JPanel
 				{
 					if(mode)
 					{
-						newGame();
+						openDetails();
 					}
 					else {
 						accept();
@@ -110,13 +108,6 @@ public class FriendsPanel extends JPanel
 		onlinePane.setSize(new Dimension(400, 250));
 		onlinePane.setLocation(0, 100);
 		add(onlinePane);
-		
-		progressBar = new JProgressBar();
-		progressBar.setIndeterminate(true);
-		progressBar.setSize(240, 40);
-		progressBar.setLocation(80, 440);
-		progressBar.setVisible(false);
-		add(progressBar);
 		
 		backButton = new JButton("Back");
 		backButton.setSize(60, 30);
@@ -199,6 +190,18 @@ public class FriendsPanel extends JPanel
 		});
 		add(newButton);
 		
+		newGameButton = new JButton("New Game");
+		newGameButton.setSize(240, 60);
+		newGameButton.setLocation(80, 440);
+		newGameButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				newGame();
+			}
+		});
+		add(newGameButton);
+		
 		JLabel version = new JLabel("v1.0");
 		version.setFont(new Font("Helvetica", Font.BOLD, 14));
 		version.setVisible(true);
@@ -215,7 +218,6 @@ public class FriendsPanel extends JPanel
 	
 	public void setLoggingIn(boolean loggingIn)
 	{
-		progressBar.setVisible(loggingIn);
 		friendsButton.setEnabled(!loggingIn);
 	}
 	
@@ -274,7 +276,6 @@ public class FriendsPanel extends JPanel
 	{
 		isLoading = loading;
 		
-		progressBar.setVisible(loading);
 		searchButton.setEnabled(!loading);
 		
 		if(loading)
@@ -375,6 +376,22 @@ public class FriendsPanel extends JPanel
 		}
 	}
 	
+	public void openDetails()
+	{
+		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
+		{
+			String name = displayedList.get(friendsList.getSelectedIndex());
+			
+			if(mode)
+			{
+				if(!name.contains("(Requested)"))
+				{
+					
+				}
+			}
+		}
+	}
+	
 	public void newGame()
 	{
 		if(!friendsList.isSelectionEmpty() && !displayedList.isEmpty())
@@ -434,6 +451,7 @@ public class FriendsPanel extends JPanel
 		private static final long serialVersionUID = 1L;
 		
 		JMenuItem newGame = new JMenuItem("New Game");
+		JMenuItem details = new JMenuItem("Details");
 		JMenuItem delete = new JMenuItem("Delete");
 		JMenuItem accept = new JMenuItem("Accept");
 		JMenuItem ignore = new JMenuItem("Ignore");
@@ -446,6 +464,13 @@ public class FriendsPanel extends JPanel
 				public void actionPerformed(ActionEvent e) 
 				{
 					newGame();
+				}
+			});
+			details.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					openDetails();
 				}
 			});
 			delete.addActionListener(new ActionListener() {
@@ -480,6 +505,7 @@ public class FriendsPanel extends JPanel
 			if(type == 0 /*Friend*/)
 			{
 				add(newGame);
+				add(details);
 				add(delete);
 			}
 			else if(type == 1 /*Request*/)

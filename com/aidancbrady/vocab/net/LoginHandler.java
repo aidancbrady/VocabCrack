@@ -63,7 +63,7 @@ public class LoginHandler
 				acct.setGamesWon(Integer.parseInt(data[1]));
 				acct.setGamesLost(Integer.parseInt(data[2]));
 				VocabCrack.instance().account = acct;
-				VocabCrack.instance().frame.menu.setAccount();
+				VocabCrack.instance().frame.menu.setAccountData();
 				VocabCrack.instance().frame.openMenu();
 				
 				JOptionPane.showMessageDialog(panel, "Logged in successfully!");
