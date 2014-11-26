@@ -3,6 +3,8 @@ package com.aidancbrady.vocab.tex;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -14,20 +16,36 @@ public class AvatarHandler
 {
 	public static File avatarDir = new File(getHomeDirectory() + File.separator + "Documents" + File.separator + "VocabServer" + File.separator + "Data");
 	
+	private static Map<String, Texture> gravatars = new HashMap<String, Texture>();
+	
 	private static final Gravatar gravatar = new Gravatar();
 	
-	public static BufferedImage downloadGravatar(Account acct) throws Exception
+	public static Texture downloadAvatar(Account acct) throws Exception
 	{
-		gravatar.setSize(256);
-		
-		byte[] download = gravatar.download(acct.email);
-		
-		if(download != null)
+		if(!gravatars.containsKey(acct.email))
 		{
-			return ImageIO.read(new ByteArrayInputStream(download));
+			gravatar.setSize(256);
+			
+			byte[] download = gravatar.download(acct.email);
+			
+			if(download != null && download.length > 0)
+			{
+				Texture tex = new Texture(ImageIO.read(new ByteArrayInputStream(download)));
+				gravatars.put(acct.email, tex);
+				
+				return tex;
+			}
+			
+			return null;
 		}
-		
-		return null;
+		else {
+			return gravatars.get(acct.email);
+		}
+	}
+	
+	public static boolean hasAvatar(Account acct)
+	{
+		return gravatars.containsKey(acct.email);
 	}
 	
 	private static File getAvatarFile(Account acct)

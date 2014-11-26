@@ -10,8 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.VocabFrame;
+import com.aidancbrady.vocab.tex.AvatarHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
 public class MenuPanel extends JPanel
@@ -21,6 +23,8 @@ public class MenuPanel extends JPanel
 	public static Texture logo = Texture.load("logo.png");
 	
 	public VocabFrame frame;
+	
+	public JLabel welcome;
 	
 	public JButton gamesButton;
 	public JButton friendsButton;
@@ -34,6 +38,13 @@ public class MenuPanel extends JPanel
 		setSize(400, 600);
 		setVisible(true);
 		setLayout(null);
+		
+		welcome = new JLabel("Welcome, " + VocabCrack.instance().account.username + "!");
+		welcome.setFont(new Font("Helvetica", Font.BOLD, 14));
+		welcome.setVisible(true);
+		welcome.setSize(200, 40);
+		welcome.setLocation(64, 16);
+		add(welcome);
 		
 		gamesButton = new JButton("Games");
 		gamesButton.setSize(300, 60);
@@ -73,12 +84,35 @@ public class MenuPanel extends JPanel
 		add(copyright);
 	}
 	
+	public void setAccount()
+	{
+		welcome.setText("Welcome, " + VocabCrack.instance().account.username + "!");
+		
+		try {
+			AvatarHandler.downloadAvatar(VocabCrack.instance().account);
+		} catch(Exception e) {}
+		
+		if(!AvatarHandler.hasAvatar(VocabCrack.instance().account))
+		{
+			welcome.setLocation(16, 16);
+		}
+		else {
+			welcome.setLocation(64, 16);
+		}
+		
+		repaint();
+	}
+	
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		
-		logo.draw(g, 50, 50, 300, 46);
+		logo.draw(g, 50, 70, 300, 46);
+		
+		try {
+			AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 8, 8, 40, 40);
+		} catch(Exception e) {}
 	}
 	
 	public class GamesButtonListener implements ActionListener
@@ -113,7 +147,7 @@ public class MenuPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) 
 		{
-			VocabCrack.instance().account = null;
+			VocabCrack.instance().account = Account.DEFAULT;
 			frame.openLogin();
 			
 			JOptionPane.showMessageDialog(MenuPanel.this, "Logged out successfully.");

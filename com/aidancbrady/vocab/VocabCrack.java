@@ -11,7 +11,7 @@ public class VocabCrack
 	
 	public VocabFrame frame;
 	
-	public Account account;
+	public Account account = Account.DEFAULT;
 	
 	public static VocabCrack instance()
 	{

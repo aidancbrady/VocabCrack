@@ -2,6 +2,8 @@ package com.aidancbrady.vocab;
 
 public class Account 
 {
+	public static final Account DEFAULT = new Account("Guest", "guest@test.com", "password");
+	
 	public String username;
 	
 	public String email;
