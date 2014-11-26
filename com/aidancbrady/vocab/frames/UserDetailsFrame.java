@@ -16,7 +16,7 @@ import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.net.FriendHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
-public class DetailsFrame extends JFrame
+public class UserDetailsFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -34,11 +34,11 @@ public class DetailsFrame extends JFrame
 	public JLabel winsLabel;
 	public JLabel lossesLabel;
 	
-	public DetailsFrame(VocabFrame f)
+	public UserDetailsFrame(VocabFrame f)
 	{
 		frame = f;
 		
-		setTitle("Details");
+		setTitle("User Details");
 		setSize(280, 400);
 		setLayout(null);
 		setAlwaysOnTop(true);
@@ -71,7 +71,7 @@ public class DetailsFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(JOptionPane.showConfirmDialog(DetailsFrame.this, "Start a game with " + acct.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
+				if(JOptionPane.showConfirmDialog(UserDetailsFrame.this, "Start a game with " + acct.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 				{
 					setVisible(false);
 					//Start new game

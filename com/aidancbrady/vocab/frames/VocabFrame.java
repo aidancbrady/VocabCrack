@@ -23,7 +23,8 @@ public class VocabFrame extends JFrame implements WindowListener
 	public GamesPanel games;
 	
 	public NewFriendFrame newFrame;
-	public DetailsFrame detailsFrame;
+	public UserDetailsFrame userDetailsFrame;
+	public GameDetailsFrame gameDetailsFrame;
 	
 	public VocabFrame()
 	{
@@ -101,15 +102,15 @@ public class VocabFrame extends JFrame implements WindowListener
 	
 	public void openDetails(String username)
 	{
-		if(detailsFrame == null)
+		if(userDetailsFrame == null)
 		{
-			detailsFrame = new DetailsFrame(this);
+			userDetailsFrame = new UserDetailsFrame(this);
 		}
 		else {
-			detailsFrame.toFront();
+			userDetailsFrame.toFront();
 		}
 		
-		detailsFrame.open(username);
+		userDetailsFrame.open(username);
 	}
 	
 	public void openDetails(Game g)

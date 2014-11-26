@@ -95,7 +95,7 @@ public class AvatarHandler
 					VocabCrack.instance().frame.menu.setAccountData();
 					VocabCrack.instance().frame.friends.repaint();
 					VocabCrack.instance().frame.friends.friendsList.repaint();
-					VocabCrack.instance().frame.detailsFrame.setAccountData();
+					VocabCrack.instance().frame.userDetailsFrame.setAccountData();
 				}
 			} catch(Exception e) {}
 			

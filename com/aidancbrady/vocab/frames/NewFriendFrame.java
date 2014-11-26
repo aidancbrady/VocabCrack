@@ -30,7 +30,7 @@ public class NewFriendFrame extends JFrame
 	
 	public JTextField searchField;
 	
-	public JList friendsList;
+	public JList<String> friendsList;
 	
 	public JProgressBar progressBar;
 	
@@ -69,7 +69,7 @@ public class NewFriendFrame extends JFrame
 		searchButton.addActionListener(new SearchListener());
 		add(searchButton);
 		
-		friendsList = new JList();
+		friendsList = new JList<String>();
 		friendsList.addMouseListener(new MouseAdapter()
 		{
 			@Override

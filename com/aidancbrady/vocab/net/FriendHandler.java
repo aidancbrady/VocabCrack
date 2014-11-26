@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.frames.DetailsFrame;
+import com.aidancbrady.vocab.frames.UserDetailsFrame;
 import com.aidancbrady.vocab.frames.NewFriendFrame;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 
@@ -450,7 +450,7 @@ public class FriendHandler
 		}
 	}
 	
-	public static void getInfo(String friend, DetailsFrame frame)
+	public static void getInfo(String friend, UserDetailsFrame frame)
 	{
 		Socket socket = new Socket();
 		
