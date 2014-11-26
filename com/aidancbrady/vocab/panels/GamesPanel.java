@@ -53,7 +53,7 @@ public class GamesPanel extends JPanel
 	public boolean mode = true;
 	
 	public Vector<Game> displayedGames = new Vector<Game>();
-	public Vector<Game> displayedRequests = new Vector<Game>();
+	public Vector<Game> displayedPast = new Vector<Game>();
 	
 	public Vector<Game> displayedList = new Vector<Game>();
 	
@@ -312,7 +312,7 @@ public class GamesPanel extends JPanel
 			displayedList = (Vector<Game>)displayedGames;
 		}
 		else {
-			displayedList = (Vector<Game>)displayedRequests;
+			displayedList = (Vector<Game>)displayedPast;
 		}
 		
 		gamesList.setListData(displayedList);
@@ -326,7 +326,7 @@ public class GamesPanel extends JPanel
 		if(!visible)
 		{
 			displayedGames.clear();
-			displayedRequests.clear();
+			displayedPast.clear();
 			displayedList.clear();
 			searchField.setText("");
 			
@@ -376,7 +376,7 @@ public class GamesPanel extends JPanel
 				else {
 					if(!query.isEmpty())
 					{
-						for(Game g : displayedRequests)
+						for(Game g : displayedPast)
 						{
 							if(g.opponent.toLowerCase().contains(query))
 							{
@@ -385,7 +385,7 @@ public class GamesPanel extends JPanel
 						}
 					}
 					else {
-						displayedList = (Vector<Game>)displayedRequests.clone();
+						displayedList = (Vector<Game>)displayedPast.clone();
 					}
 				}
 			}

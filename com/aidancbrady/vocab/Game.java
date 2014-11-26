@@ -39,6 +39,9 @@ public class Game
 	/** Only used client-side */
 	public boolean isRequest;
 	
+	/** Only used client-side */
+	public String opponentEmail;
+	
 	public Game(String name1, String name2)
 	{
 		user = name1;
@@ -77,9 +80,9 @@ public class Game
 		return this;
 	}
 	
-	public static Game readDefault(String user, String s)
+	public static Game readDefault(String user, String s, Character splitter)
 	{
-		String[] split = s.split(":");
+		String[] split = s.split(splitter.toString());
 		
 		if(split.length != 4)
 		{
@@ -96,9 +99,9 @@ public class Game
 		return g;
 	}
 	
-	public static Game readRequest(String user, String s)
+	public static Game readRequest(String user, String s, Character splitter)
 	{
-		String[] split = s.split(":");
+		String[] split = s.split(splitter.toString());
 		
 		if(split.length != 4)
 		{
@@ -114,31 +117,31 @@ public class Game
 		return g;
 	}
 	
-	public void writeDefault(StringBuilder str, Character split)
+	public void writeDefault(StringBuilder str, Character splitter)
 	{
 		str.append(opponent);
-		str.append(split);
+		str.append(splitter);
 		str.append(gameType);
-		str.append(split);
+		str.append(splitter);
 		str.append(userTurn);
-		str.append(split);
+		str.append(splitter);
 		
-		writeScoreList(userPoints, str, split);
-		writeScoreList(opponentPoints, str, split);
+		writeScoreList(userPoints, str, splitter);
+		writeScoreList(opponentPoints, str, splitter);
 	}
 	
-	public void writeRequest(StringBuilder str, Character split)
+	public void writeRequest(StringBuilder str, Character splitter)
 	{
 		str.append(activeRequested);
-		str.append(split);
+		str.append(splitter);
 		str.append(getRequestOpponent());
-		str.append(split);
+		str.append(splitter);
 		str.append(gameType);
-		str.append(split);
+		str.append(splitter);
 		str.append(userTurn);
-		str.append(split);
+		str.append(splitter);
 		
-		writeScoreList(userPoints, str, split);
+		writeScoreList(userPoints, str, splitter);
 	}
 	
 	public void writeScoreList(List<Integer> score, StringBuilder str, Character split)
