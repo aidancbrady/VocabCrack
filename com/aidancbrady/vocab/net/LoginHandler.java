@@ -59,9 +59,9 @@ public class LoginHandler
 				
 				String[] data = response[1].split(",");
 				
-				Account acct = new Account(username, password);
-				acct.setGamesWon(Integer.parseInt(data[0]));
-				acct.setGamesLost(Integer.parseInt(data[1]));
+				Account acct = new Account(username, data[0].trim(), password);
+				acct.setGamesWon(Integer.parseInt(data[1]));
+				acct.setGamesLost(Integer.parseInt(data[2]));
 				VocabCrack.instance().account = acct;
 				VocabCrack.instance().frame.openMenu();
 				

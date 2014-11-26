@@ -20,6 +20,11 @@ public class Texture
 		img = ImageIO.read(getClass().getClassLoader().getResource(path));
 	}
 	
+	public Texture(BufferedImage i)
+	{
+		img = i;
+	}
+	
 	public static Texture load(String path)
 	{
 		if(loadedTextures.containsKey(path))

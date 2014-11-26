@@ -1,9 +1,10 @@
 package com.aidancbrady.vocab;
 
-
 public class Account 
 {
 	public String username;
+	
+	public String email;
 	
 	public String password;
 	
@@ -11,15 +12,23 @@ public class Account
 	
 	public int gamesLost;
 	
-	public Account(String user, String pass)
+	public Account(String user, String em, String pass)
 	{
 		username = user;
+		email = em;
 		password = pass;
 	}
 	
 	public Account setUsername(String user)
 	{
 		username = user.trim();
+		
+		return this;
+	}
+	
+	public Account setEmail(String em)
+	{
+		email = em;
 		
 		return this;
 	}
