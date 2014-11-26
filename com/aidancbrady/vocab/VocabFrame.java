@@ -20,6 +20,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	public FriendsPanel friends;
 	
 	public NewFriendFrame newFrame;
+	public DetailsFrame detailsFrame;
 	
 	public VocabFrame()
 	{
@@ -71,8 +72,6 @@ public class VocabFrame extends JFrame implements WindowListener
 	
 	public void openNewFriend()
 	{
-		setSize(400, 600);
-		
 		if(newFrame == null)
 		{
 			newFrame = new NewFriendFrame(this);
@@ -81,6 +80,19 @@ public class VocabFrame extends JFrame implements WindowListener
 			newFrame.setVisible(true);
 			newFrame.toFront();
 		}
+	}
+	
+	public void openDetails(String username)
+	{
+		if(detailsFrame == null)
+		{
+			detailsFrame = new DetailsFrame(this);
+		}
+		else {
+			detailsFrame.toFront();
+		}
+		
+		detailsFrame.open(username);
 	}
 	
 	@Override

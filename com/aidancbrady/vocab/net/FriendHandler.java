@@ -9,6 +9,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import com.aidancbrady.vocab.Account;
+import com.aidancbrady.vocab.DetailsFrame;
 import com.aidancbrady.vocab.NewFriendFrame;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.panels.FriendsPanel;
@@ -424,8 +426,54 @@ public class FriendHandler
 		}
 	}
 	
-	public static void getInfo(String friend, FriendsPanel panel)
+	public static void getInfo(String friend, DetailsFrame frame)
 	{
+		Socket socket = new Socket();
 		
+		try {
+			socket.connect(new InetSocketAddress(VocabCrack.SERVER_IP, VocabCrack.SERVER_PORT), 5000);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+			
+			writer.println("GETINFO:" + VocabCrack.instance().account.username + ":" + friend);
+			writer.flush();
+			
+			String[] response = reader.readLine().trim().split(":");
+			
+			if(response[0].equals("ACCEPT"))
+			{
+				socket.close();
+				
+				int won = Integer.parseInt(response[2]);
+				int lost = Integer.parseInt(response[3]);
+				
+				Account acct = new Account(friend, response[1], "password").setGamesWon(won).setGamesLost(lost);
+				frame.acct = acct;
+				
+				return;
+			}
+			else if(response[0].equals("REJECT"))
+			{
+				socket.close();
+				
+				JOptionPane.showMessageDialog(frame, "Couldn't process request: " + response[1]);
+				
+				return;
+			}
+			else {
+				socket.close();
+				
+				JOptionPane.showMessageDialog(frame, "Unable to parse response");
+				
+				return;
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(frame, "Couldn't connect to server: " + e.getLocalizedMessage());
+			
+			try {
+				socket.close();
+			} catch(Exception e1) {}
+		}
 	}
 }

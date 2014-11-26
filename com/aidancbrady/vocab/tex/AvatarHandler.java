@@ -83,6 +83,7 @@ public class AvatarHandler
 					gravatars.put(acct.email, tex);
 					
 					VocabCrack.instance().frame.menu.setAccountData();
+					VocabCrack.instance().frame.detailsFrame.setAccountData();
 				}
 			} catch(Exception e) {}
 			

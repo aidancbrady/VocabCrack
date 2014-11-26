@@ -21,6 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import com.aidancbrady.vocab.DetailsFrame;
 import com.aidancbrady.vocab.VocabFrame;
 import com.aidancbrady.vocab.net.FriendHandler;
 
@@ -386,7 +387,7 @@ public class FriendsPanel extends JPanel
 			{
 				if(!name.contains("(Requested)"))
 				{
-					
+					frame.openDetails(name);
 				}
 			}
 		}
