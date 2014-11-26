@@ -453,7 +453,13 @@ public class GamesPanel extends JPanel
 			
 			if(JOptionPane.showConfirmDialog(GamesPanel.this, msg, "Confirm Deletion", JOptionPane.YES_NO_OPTION) == 0)
 			{
-				GameHandler.deleteGame(!g.isRequest ? g.opponent : g.getRequestOpponent(), type, GamesPanel.this);
+				if(type == 1)
+				{
+					GameHandler.deleteGame(!g.isRequest ? g.opponent : g.getRequestOpponent(), type, GamesPanel.this, displayedPast.indexOf(g));
+				}
+				else {
+					GameHandler.deleteGame(!g.isRequest ? g.opponent : g.getRequestOpponent(), type, GamesPanel.this);
+				}
 			}
 		}
 	}

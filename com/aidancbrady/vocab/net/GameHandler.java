@@ -170,7 +170,7 @@ public class GameHandler
 		
 	}
 	
-	public static void deleteGame(String friend, int type, GamesPanel panel)
+	public static void deleteGame(String friend, int type, GamesPanel panel, Integer... index)
 	{
 		panel.setLoading(true);
 		
@@ -182,7 +182,7 @@ public class GameHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("DELFRIEND:" + VocabCrack.instance().account.username + ":" + friend + ":" + type);
+			writer.println("DELFRIEND:" + VocabCrack.instance().account.username + ":" + friend + ":" + type + (type == 1 ? index[0] : ""));
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");

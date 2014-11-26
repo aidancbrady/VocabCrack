@@ -253,6 +253,29 @@ public class Game
 		return won;
 	}
 	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == null || !(obj instanceof Game))
+		{
+			return false;
+		}
+		
+		Game g = (Game)obj;
+		
+		if(!user.equals(g.user) || !opponent.equals(g.opponent) || gameType != g.gameType)
+		{
+			return false;
+		}
+		
+		if(!userPoints.equals(g.userPoints) || !opponentPoints.equals(g.opponentPoints))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public static enum GameType
 	{
 		SINGLE,
