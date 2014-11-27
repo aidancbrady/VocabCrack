@@ -42,7 +42,7 @@ public class LoginHandler
 		Socket socket = new Socket();
 		
 		try {
-			socket.connect(new InetSocketAddress(VocabCrack.SERVER_IP, VocabCrack.SERVER_PORT), 5000);
+			socket.connect(new InetSocketAddress(VocabCrack.serverIP, VocabCrack.serverPort), 5000);
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
@@ -62,6 +62,7 @@ public class LoginHandler
 				Account acct = new Account(username, data[0].trim(), password);
 				acct.setGamesWon(Integer.parseInt(data[1]));
 				acct.setGamesLost(Integer.parseInt(data[2]));
+				
 				VocabCrack.instance().account = acct;
 				VocabCrack.instance().frame.menu.setAccountData();
 				VocabCrack.instance().frame.openMenu();

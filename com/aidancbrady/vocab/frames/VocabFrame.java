@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 
 import com.aidancbrady.vocab.Game;
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 import com.aidancbrady.vocab.panels.GamesPanel;
 import com.aidancbrady.vocab.panels.LoginPanel;
@@ -42,7 +43,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		add(friends = new FriendsPanel(this)).setVisible(false);
 		add(games = new GamesPanel(this)).setVisible(false);
 		
-		openGameDetails(Game.DEFAULT.opponent);
+		Utilities.loadData();
 	}
 	
 	public void openLogin()

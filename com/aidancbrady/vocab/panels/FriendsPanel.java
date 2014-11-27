@@ -27,6 +27,7 @@ import javax.swing.border.TitledBorder;
 
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.Utilities;
+import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.FriendHandler;
 import com.aidancbrady.vocab.net.GameHandler;
@@ -211,7 +212,7 @@ public class FriendsPanel extends JPanel
 		});
 		add(newGameButton);
 		
-		JLabel version = new JLabel("v1.0");
+		JLabel version = new JLabel("v" + VocabCrack.VERSION);
 		version.setFont(new Font("Helvetica", Font.BOLD, 14));
 		version.setVisible(true);
 		version.setSize(200, 40);

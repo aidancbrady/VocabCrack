@@ -70,7 +70,7 @@ public class MenuPanel extends JPanel
 		logoutButton.addActionListener(new LogoutButtonListener());
 		add(logoutButton);
 		
-		JLabel version = new JLabel("v1.0");
+		JLabel version = new JLabel("v" + VocabCrack.VERSION);
 		version.setFont(new Font("Helvetica", Font.BOLD, 14));
 		version.setVisible(true);
 		version.setSize(200, 40);

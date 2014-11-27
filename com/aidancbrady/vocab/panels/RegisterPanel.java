@@ -13,6 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
+import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.RegisterHandler;
 import com.aidancbrady.vocab.tex.Texture;
@@ -128,7 +129,7 @@ public class RegisterPanel extends JPanel
 		registerButton.addActionListener(new RegisterButtonListener());
 		add(registerButton);
 		
-		JLabel version = new JLabel("v1.0");
+		JLabel version = new JLabel("v" + VocabCrack.VERSION);
 		version.setFont(new Font("Helvetica", Font.BOLD, 14));
 		version.setVisible(true);
 		version.setSize(200, 40);
