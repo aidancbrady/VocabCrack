@@ -37,6 +37,7 @@ public final class Utilities
 	public static void loadData()
 	{
 		new DownloadData().start();
+		WordListHandler.init();
 	}
 	
 	public static void updateCheck()

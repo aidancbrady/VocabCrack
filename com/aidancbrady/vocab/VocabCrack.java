@@ -1,5 +1,8 @@
 package com.aidancbrady.vocab;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.SwingUtilities;
 
 import com.aidancbrady.vocab.frames.VocabFrame;
@@ -14,6 +17,8 @@ public class VocabCrack
 	public static final String VERSION = "1.0.0";
 	
 	public VocabFrame frame;
+	
+	public Map<String, String> loadedList = new HashMap<String, String>();
 	
 	public Account account = Account.DEFAULT;
 	

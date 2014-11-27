@@ -280,8 +280,20 @@ public class Game
 	
 	public static enum GameType
 	{
-		SINGLE,
-		BEST_OF_3,
-		BEST_OF_5;
+		SINGLE("Single Game"),
+		BEST_OF_3("Best of 3"),
+		BEST_OF_5("Best of 5");
+		
+		private String desc;
+		
+		private GameType(String s)
+		{
+			desc = s;
+		}
+		
+		public String getDescription()
+		{
+			return desc;
+		}
 	}
 }
