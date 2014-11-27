@@ -136,10 +136,10 @@ public class UserDetailsFrame extends JFrame
 		usernameLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(usernameLabel)/2F), 200);
 		
 		winsLabel = new JLabel("Games Won: " + acct.gamesWon);
-		winsLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(winsLabel)/2F), 200);
+		winsLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(winsLabel)/2F), 240);
 		
 		lossesLabel = new JLabel("Games Lost: " + acct.gamesLost);
-		lossesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(lossesLabel)/2F), 200);
+		lossesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(lossesLabel)/2F), 270);
 		
 		repaint();
 	}

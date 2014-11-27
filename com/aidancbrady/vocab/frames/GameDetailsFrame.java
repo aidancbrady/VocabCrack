@@ -1,14 +1,20 @@
 package com.aidancbrady.vocab.frames;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
@@ -32,6 +38,8 @@ public class GameDetailsFrame extends JFrame
 	public JLabel namesLabel;
 	public JLabel scoreLabel;
 	
+	public JList<String> scoreList;
+	
 	public GameDetailsFrame(VocabFrame f)
 	{
 		frame = f;
@@ -45,15 +53,27 @@ public class GameDetailsFrame extends JFrame
 		namesLabel.setFont(new Font("Helvetica", Font.BOLD, 22));
 		namesLabel.setVisible(true);
 		namesLabel.setSize(200, 40);
-		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 200);
+		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 120);
 		add(namesLabel);
 		
 		scoreLabel = new JLabel(game.getUserScore() + " - " + game.getOpponentScore());
 		scoreLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
 		scoreLabel.setVisible(true);
 		scoreLabel.setSize(200, 40);
-		scoreLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(scoreLabel)/2F), 240);
+		scoreLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(scoreLabel)/2F), 160);
 		add(scoreLabel);
+		
+		scoreList = new JList<String>();
+		scoreList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scoreList.setVisible(true);
+		scoreList.setFocusable(true);
+		scoreList.setEnabled(true);
+		scoreList.setSelectionInterval(1, 1);
+		((DefaultListCellRenderer)scoreList.getCellRenderer()).setHorizontalAlignment(JLabel.CENTER);
+		JScrollPane onlinePane = new JScrollPane(scoreList);
+		onlinePane.setSize(new Dimension(80, 120));
+		onlinePane.setLocation(100, 200);
+		add(onlinePane);
 		
 		playButton = new JButton("Play");
 		playButton.setSize(120, 30);
@@ -98,6 +118,23 @@ public class GameDetailsFrame extends JFrame
 		}
 	}
 	
+	public void updateScoreList()
+	{
+		int maxLength = Math.max(game.userPoints.size(), game.opponentPoints.size());
+		
+		Vector<String> vec = new Vector<String>();
+		
+		for(int i = 0; i < maxLength; i++)
+		{
+			String userScore = i <= game.userPoints.size()-1 ? game.userPoints.get(i).toString() : "N/A";
+			String opponentScore = i <= game.opponentPoints.size()-1 ? game.opponentPoints.get(i).toString() : "N/A";
+			
+			vec.add(userScore + " to " + opponentScore);
+		}
+		
+		scoreList.setListData(vec);
+	}
+	
 	public void open(String username)
 	{
 		GameHandler.getInfo(username, this);
@@ -112,10 +149,12 @@ public class GameDetailsFrame extends JFrame
 		avatar.repaint();
 		
 		namesLabel = new JLabel(game.user + " vs " + game.opponent);
-		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 200);
+		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 120);
 		
 		scoreLabel = new JLabel(game.getUserScore() + " - " + game.getOpponentScore());
-		scoreLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(scoreLabel)/2F), 200);
+		scoreLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(scoreLabel)/2F), 160);
+		
+		updateScoreList();
 		
 		repaint();
 	}
@@ -137,11 +176,11 @@ public class GameDetailsFrame extends JFrame
 			super.paintComponent(g);
 			
 			try {
-				AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 30, 56, 80, 80);
+				AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 30, 26, 80, 80);
 			} catch(Exception e) {}
 			
 			try {
-				AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 180, 56, 80, 80);
+				AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 170, 26, 80, 80);
 			} catch(Exception e) {}
 		}
 	}

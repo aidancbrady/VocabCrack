@@ -41,6 +41,8 @@ public class VocabFrame extends JFrame implements WindowListener
 		add(menu = new MenuPanel(this)).setVisible(false);
 		add(friends = new FriendsPanel(this)).setVisible(false);
 		add(games = new GamesPanel(this)).setVisible(false);
+		
+		openGameDetails(Game.DEFAULT.opponent);
 	}
 	
 	public void openLogin()
@@ -115,7 +117,15 @@ public class VocabFrame extends JFrame implements WindowListener
 	
 	public void openGameDetails(String opponent)
 	{
+		if(gameDetailsFrame == null)
+		{
+			gameDetailsFrame = new GameDetailsFrame(this);
+		}
+		else {
+			gameDetailsFrame.toFront();
+		}
 		
+		gameDetailsFrame.open(opponent);
 	}
 	
 	@Override
