@@ -50,7 +50,7 @@ public final class Utilities
 		{
 			if(!latestVersion.equals(VocabCrack.VERSION))
 			{
-				JOptionPane.showMessageDialog(VocabCrack.instance().frame, "A new version is available. Check the options menu for details.");
+				JOptionPane.showMessageDialog(VocabCrack.instance().frame, "A new version is available. Check the options menu after logging in for details.");
 			}
 		}
 	}

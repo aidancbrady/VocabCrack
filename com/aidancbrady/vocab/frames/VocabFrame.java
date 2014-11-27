@@ -46,8 +46,8 @@ public class VocabFrame extends JFrame implements WindowListener
 		add(menu = new MenuPanel(this)).setVisible(false);
 		add(friends = new FriendsPanel(this)).setVisible(false);
 		add(games = new GamesPanel(this)).setVisible(false);
-		add(newGame = new NewGamePanel(this));
-		add(options = new OptionsPanel(this)).setVisible(false);
+		add(newGame = new NewGamePanel(this)).setVisible(false);
+		add(options = new OptionsPanel(this));
 		
 		Utilities.loadData();
 	}
