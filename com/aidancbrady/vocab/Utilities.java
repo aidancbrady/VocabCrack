@@ -19,6 +19,8 @@ public final class Utilities
 	public static String latestVersion;
 	public static String versionNews;
 	public static String news;
+	public static String downloadUrl;
+	public static String updateName;
 	
 	public static boolean dataLoaded;
 	
@@ -38,6 +40,8 @@ public final class Utilities
 	{
 		new DownloadData().start();
 		WordListHandler.init();
+		
+		System.out.println(System.getProperty("user.dir"));
 	}
 	
 	public static void updateCheck()
@@ -97,6 +101,8 @@ public final class Utilities
 				latestVersion = data.get(2).trim();
 				versionNews = data.get(3).trim();
 				news = data.get(4).trim();
+				downloadUrl = data.get(5).trim();
+				updateName = data.get(6).trim();
 				
 				dataLoaded = true;
 				
