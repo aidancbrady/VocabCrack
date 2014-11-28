@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.tex.AvatarHandler;
@@ -139,9 +138,7 @@ public class MenuPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) 
 		{
-			VocabCrack.instance().account = Account.DEFAULT;
-			frame.openLogin();
-			
+			VocabCrack.instance().logout();
 			JOptionPane.showMessageDialog(MenuPanel.this, "Logged out successfully.");
 		}
 	}

@@ -56,7 +56,7 @@ public class PasswordHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("CHANGEPASS:" + VocabCrack.instance().account.username + "," + current + "," + password);
+			writer.println("CHANGEPASS:" + VocabCrack.instance().account.username + ":" + current + ":" + password);
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");
@@ -65,9 +65,9 @@ public class PasswordHandler
 			{
 				socket.close();
 				
-				VocabCrack.instance().frame.openLogin();
-				
 				JOptionPane.showMessageDialog(panel, "Successfully updated password.");
+				
+				VocabCrack.instance().logout();
 				
 				return;
 			}

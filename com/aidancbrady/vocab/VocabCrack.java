@@ -47,6 +47,12 @@ public class VocabCrack
         SwingUtilities.invokeLater(doSwingLater);
 	}
 	
+	public void logout()
+	{
+		VocabCrack.instance().account = Account.DEFAULT;
+		frame.openLogin();
+	}
+	
 	private void initMacOSX()
 	{
 		try {
