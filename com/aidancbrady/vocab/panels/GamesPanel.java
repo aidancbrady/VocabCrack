@@ -451,7 +451,7 @@ public class GamesPanel extends JPanel
 		{
 			Game g = displayedList.get(gamesList.getSelectedIndex());
 			
-			String msg = type == 0 ? "Are you sure you want to delete your game with " + g.opponent + "?" : 
+			String msg = type == 0 ? "Are you sure you want to resign from your game with " + g.opponent + "?" : 
 				(type == 1 ? "Are you sure you want to remove your past game with " + g.opponent + "?" : 
 					(type == 2 ? "Are you sure you want to cancel your request to " + g.getRequestOpponent() + "?" : 
 						"Are you sure you want to ignore " + g.getRequesterName() + "'s game request?"));
@@ -542,7 +542,7 @@ public class GamesPanel extends JPanel
 		
 		JMenuItem play = new JMenuItem("Play");
 		JMenuItem details = new JMenuItem("Details");
-		JMenuItem delete = new JMenuItem("Delete");
+		JMenuItem resign = new JMenuItem("Resign");
 		JMenuItem newGame = new JMenuItem("New Game");
 		JMenuItem remove = new JMenuItem("Remove");
 		JMenuItem cancel = new JMenuItem("Cancel");
@@ -565,7 +565,7 @@ public class GamesPanel extends JPanel
 					openDetails();
 				}
 			});
-			delete.addActionListener(new ActionListener() {
+			resign.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -612,7 +612,7 @@ public class GamesPanel extends JPanel
 			{
 				add(play);
 				add(details);
-				add(delete);
+				add(resign);
 			}
 			else if(type == 1 /*Past*/)
 			{

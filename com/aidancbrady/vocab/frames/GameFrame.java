@@ -32,9 +32,15 @@ public class GameFrame extends JFrame implements WindowListener
 	
 	private static final Texture wordTexture = Texture.load("word.png");
 	
+	public TimerThread timer;
+	
 	public VocabFrame frame;
 	
 	public Game game = Game.DEFAULT;
+	
+	public int amountCorrect = 0;
+	
+	public int time = 30;
 	
 	public int wordIndex = -1;
 	public boolean activeWord;
@@ -47,6 +53,9 @@ public class GameFrame extends JFrame implements WindowListener
 	
 	public JLabel userLabel;
 	public JLabel opponentLabel;
+	
+	public JLabel remainingLabel;
+	public JLabel timerLabel;
 	
 	public JLabel wordLabel;
 	
@@ -62,7 +71,7 @@ public class GameFrame extends JFrame implements WindowListener
 		frame = f;
 		
 		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
-		setSize(512, 512);
+		setSize(512, 580);
 		setLayout(null);
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -112,6 +121,20 @@ public class GameFrame extends JFrame implements WindowListener
 		opponentLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 16);
 		add(opponentLabel);
 		
+		remainingLabel = new JLabel("Remaining: 9");
+		remainingLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
+		remainingLabel.setVisible(false);
+		remainingLabel.setSize(200, 40);
+		remainingLabel.setLocation(16, 512);
+		add(remainingLabel);
+		
+		timerLabel = new JLabel("Timer: N/A");
+		timerLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
+		timerLabel.setVisible(false);
+		timerLabel.setSize(200, 40);
+		timerLabel.setLocation(496-Utilities.getLabelWidth(timerLabel), 512);
+		add(timerLabel);
+		
 		def0 = new DefComponent(0);
 		def0.setSize(384, 48);
 		def0.setLocation(60, 160);
@@ -136,6 +159,13 @@ public class GameFrame extends JFrame implements WindowListener
 		wordComp.setSize(200, 100);
 		wordComp.setLocation(156, 30);
 		add(wordComp);
+		
+		wordLabel = new JLabel();
+		wordLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
+		wordLabel.setVisible(false);
+		wordLabel.setSize(300, 40);
+		wordLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(wordLabel)/2F), 340);
+		add(wordLabel);
 	}
 	
 	public void updateGame()
@@ -149,6 +179,11 @@ public class GameFrame extends JFrame implements WindowListener
 		{
 			updateDefs(false);
 			wordComp.setVisible(false);
+			
+			remainingLabel.setVisible(false);
+			timerLabel.setVisible(false);
+			
+			wordLabel.setVisible(false);
 			
 			answerLabel.setText("Round " + (game.userPoints.size()+1));
 			answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
@@ -165,6 +200,9 @@ public class GameFrame extends JFrame implements WindowListener
 			updateDefs(false);
 			wordComp.setVisible(false);
 			
+			remainingLabel.setVisible(false);
+			timerLabel.setVisible(false);
+			
 			answerLabel.setText(correct ? "Correct" : "Incorrect");
 			answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
 			answerLabel.setVisible(true);
@@ -172,6 +210,12 @@ public class GameFrame extends JFrame implements WindowListener
 			statusLabel.setText("Press spacebar to continue");
 			statusLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(statusLabel)/2F), 240);
 			statusLabel.setVisible(true);
+			
+			String[] split = game.activeWords.get(wordIndex-1).split(WordListHandler.splitter.toString());
+			
+			wordLabel.setText(split[0] + ": " + split[1]);
+			wordLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(wordLabel)/2F), 340);
+			wordLabel.setVisible(true);
 			
 			if(correct)
 			{
@@ -187,10 +231,19 @@ public class GameFrame extends JFrame implements WindowListener
 			wordComp.setVisible(true);
 			wordComp.setWord(getCurrentWord().split(WordListHandler.splitter.toString())[0]);
 			
-			getContentPane().setBackground(Color.LIGHT_GRAY);
+			wordLabel.setVisible(false);
+			
+			(timer = new TimerThread()).start();
+			
+			remainingLabel.setVisible(true);
+			
+			timerLabel.setVisible(true);
+			timerLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 512);
 			
 			answerLabel.setVisible(false);
 			statusLabel.setVisible(false);
+			
+			getContentPane().setBackground(Color.LIGHT_GRAY);
 		}
 	}
 	
@@ -236,6 +289,34 @@ public class GameFrame extends JFrame implements WindowListener
 		}
 	}
 	
+	public void onAnswer(boolean b)
+	{
+		correct = b;
+		activeWord = false;
+		wordIndex++;
+		
+		if(correct)
+		{
+			amountCorrect++;
+		}
+		
+		remainingLabel.setText("Remaining: " + (10-(wordIndex+1)));
+		
+		if(wordIndex == 10)
+		{
+			remainingLabel.setText("Remaining: 9");
+		}
+		
+		if(timer != null)
+		{
+			try {
+				timer.interrupt();
+			} catch(Exception e) {}
+		}
+		
+		updateGame();
+	}
+	
 	public void exitGame()
 	{
 		game = Game.DEFAULT;
@@ -246,6 +327,15 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
 		frame.openMenu();
+		
+		if(timer != null)
+		{
+			try {
+				timer.interrupt();
+			} catch(Exception e) {}
+		}
+		
+		updateGame();
 		
 		setVisible(false);
 	}
@@ -258,7 +348,7 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		setVisible(true);
 		
-		new TimerThread().start();
+		new VisualsThread().start();
 		
 		updateGame();
 	}
@@ -287,7 +377,7 @@ public class GameFrame extends JFrame implements WindowListener
 		return game.activeWords.get(wordIndex);
 	}
 	
-	public class TimerThread extends Thread
+	public class VisualsThread extends Thread
 	{
 		@Override
 		public void run()
@@ -302,6 +392,34 @@ public class GameFrame extends JFrame implements WindowListener
 				try {
 					Thread.sleep(1);
 				} catch(Exception e) {}
+			}
+		}
+	}
+	
+	public class TimerThread extends Thread
+	{
+		@Override
+		public void run()
+		{
+			while(isVisible())
+			{
+				try {
+					Thread.sleep(1000);
+				} catch(Exception e) {}
+				
+				time--;
+				
+				if(time < 0)
+				{
+					time = 30;
+					onAnswer(false);
+					timerLabel.setText("Timer: 30s");
+					timerLabel.setLocation(496-Utilities.getLabelWidth(timerLabel), 512);
+					
+					break;
+				}
+				
+				timerLabel.setText("Timer: " + time + "s");
 			}
 		}
 	}
@@ -381,13 +499,7 @@ public class GameFrame extends JFrame implements WindowListener
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
-			if(correct)
-			{
-				System.out.println("CORRECT");
-			}
-			else {
-				System.out.println("INCORRECT");
-			}
+			onAnswer(correct);
 		}
 
 		@Override
