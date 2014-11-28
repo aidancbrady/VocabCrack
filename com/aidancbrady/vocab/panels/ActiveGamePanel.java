@@ -40,7 +40,7 @@ public class ActiveGamePanel extends JPanel
 			{
 				if(JOptionPane.showConfirmDialog(ActiveGamePanel.this, "Are you sure you want to exit this game? Your progress will be reset.", "Confirm Exit", JOptionPane.YES_NO_OPTION) == 0)
 				{
-					frame.openMenu();
+					frame.gameFrame.exitGame();
 				}
 			}
 		});

@@ -42,6 +42,8 @@ public class Game
 	/** List of 10 words that were fabricated by the game host and are still in use. */
 	public List<String> activeWords = new ArrayList<String>();
 	
+	public String listIdentifier;
+	
 	/** Only used client-side */
 	public boolean isRequest;
 	
@@ -68,6 +70,8 @@ public class Game
 	{
 		Game g = new Game(opponent, user, !activeRequested);
 		g.gameType = gameType;
+		g.listIdentifier = listIdentifier;
+		g.activeWords = activeWords;
 		g.userTurn = !g.userTurn;
 		g.userPoints = userPoints;
 		
@@ -79,12 +83,16 @@ public class Game
 		Game g = new Game(opponent, user);
 		
 		String temp = opponent;
-		opponent = user;
-		user = temp;
+		g.opponent = user;
+		g.user = temp;
 		
 		List<Integer> temp1 = opponentPoints;
-		opponentPoints = userPoints;
-		userPoints = temp1;
+		g.opponentPoints = userPoints;
+		g.userPoints = temp1;
+		
+		g.userTurn = !userTurn;
+		g.activeWords = activeWords;
+		g.listIdentifier = listIdentifier;
 		
 		return g;
 	}
@@ -122,11 +130,12 @@ public class Game
 			return null;
 		}
 		
-		Game g = new Game(user, split[0]);
+		Game g = new Game(user, split[0].trim());
 		g.gameType = Integer.parseInt(split[1]);
 		g.userTurn = Boolean.parseBoolean(split[2]);
+		g.listIdentifier = split[3].trim();
 		
-		int index = g.readScoreList(split, 3, true);
+		int index = g.readScoreList(split, 4, true);
 		index = g.readScoreList(split, index, false);
 		
 		g.readWordList(split[index]);
@@ -143,11 +152,12 @@ public class Game
 			return null;
 		}
 		
-		Game g = new Game(user, split[1], Boolean.parseBoolean(split[0]));
+		Game g = new Game(user, split[1].trim(), Boolean.parseBoolean(split[0]));
 		g.gameType = Integer.parseInt(split[2]);
 		g.userTurn = Boolean.parseBoolean(split[3]);
+		g.listIdentifier = split[4].trim();
 		
-		int index = g.readScoreList(split, 4, true);
+		int index = g.readScoreList(split, 5, true);
 		
 		g.readWordList(split[index]);
 		
@@ -161,6 +171,8 @@ public class Game
 		str.append(gameType);
 		str.append(splitter);
 		str.append(userTurn);
+		str.append(splitter);
+		str.append(listIdentifier);
 		str.append(splitter);
 		
 		writeScoreList(userPoints, str, splitter);
@@ -179,6 +191,8 @@ public class Game
 		str.append(gameType);
 		str.append(splitter);
 		str.append(userTurn);
+		str.append(splitter);
+		str.append(listIdentifier);
 		str.append(splitter);
 		
 		writeScoreList(userPoints, str, splitter);

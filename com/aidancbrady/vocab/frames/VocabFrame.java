@@ -58,7 +58,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		addPanel(options = new OptionsPanel(this)).setVisible(false);
 		addPanel(activeGame = new ActiveGamePanel(this)).setVisible(true);
 		
-		//openGame(Game.DEFAULT);
+		openGame(Game.DEFAULT);
 		
 		Utilities.loadData();
 	}
@@ -172,10 +172,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	}
 	
 	@Override
-	public void windowOpened(WindowEvent e)
-	{
-		
-	}
+	public void windowOpened(WindowEvent e) {}
 
 	@Override
 	public void windowClosing(WindowEvent e)
@@ -184,32 +181,17 @@ public class VocabFrame extends JFrame implements WindowListener
 	}
 
 	@Override
-	public void windowClosed(WindowEvent e) 
-	{
-		
-	}
+	public void windowClosed(WindowEvent e) {}
 
 	@Override
-	public void windowIconified(WindowEvent e) 
-	{
-		
-	}
+	public void windowIconified(WindowEvent e) {}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) 
-	{
-		
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 	@Override
-	public void windowActivated(WindowEvent e) 
-	{
-		
-	}
+	public void windowActivated(WindowEvent e) {}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) 
-	{
-		
-	}
+	public void windowDeactivated(WindowEvent e) {}
 }
