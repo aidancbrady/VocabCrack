@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.panels.OptionsPanel;
 
@@ -42,7 +43,7 @@ public class PasswordHandler
 			return;
 		}
 		
-		if(current.contains(",") || current.contains(":") || password.contains(",") || password.contains(":"))
+		if(!Utilities.isValidCredential(current, password))
 		{
 			JOptionPane.showMessageDialog(panel, "Invalid characters.");
 			return;

@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,8 @@ public final class Utilities
 	
 	public static boolean dataLoaded;
 	
+	public static Character[] badChars = new Character[] {',', ':', '&', ' '};
+	
 	public static int getLabelWidth(JLabel l)
 	{ 
 		FontRenderContext context = new FontRenderContext(new AffineTransform(), true, true);
@@ -35,6 +36,22 @@ public final class Utilities
 	public static ImageIcon scaleImage(ImageIcon img, int width, int height)
 	{
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_FAST));
+	}
+	
+	public static boolean isValidCredential(String... creds)
+	{
+		for(String s : creds)
+		{
+			for(Character c : badChars)
+			{
+				if(s.trim().contains(c.toString()))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 	
 	public static void loadData()
