@@ -1,5 +1,6 @@
 package com.aidancbrady.vocab;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
@@ -27,13 +28,18 @@ public final class Utilities
 	
 	public static boolean dataLoaded;
 	
-	public static Character[] badChars = new Character[] {',', ':', '&', ' ', '|'};
+	public static Character[] badChars = new Character[] {',', ':', '&', ' ', '|', '>'};
 	
 	public static int getLabelWidth(JLabel l)
 	{ 
+		return getWidth(l.getFont(), l.getText());
+	}
+	
+	public static int getWidth(Font font, String s)
+	{
 		FontRenderContext context = new FontRenderContext(new AffineTransform(), true, true);
 		
-		return (int)(l.getFont().getStringBounds(l.getText(), context).getWidth());
+		return (int)(font.getStringBounds(s, context).getWidth());
 	}
 	
 	public static ImageIcon scaleImage(ImageIcon img, int width, int height)

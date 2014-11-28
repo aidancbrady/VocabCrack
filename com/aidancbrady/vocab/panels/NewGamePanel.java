@@ -312,6 +312,10 @@ public class NewGamePanel extends JPanel
 			listIdentifier = null;
 			displayedList.clear();
 			opponent = "Guest";
+			
+			singleButton.setSelected(false);
+			threeButton.setSelected(false);
+			fiveButton.setSelected(false);
 		}
 		
 		updateInfo();

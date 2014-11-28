@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
+import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
 public class GameFrame extends JFrame implements WindowListener
@@ -28,6 +29,8 @@ public class GameFrame extends JFrame implements WindowListener
 	private static final long serialVersionUID = 1L;
 	
 	private static Random rand = new Random();
+	
+	private static final Texture wordTexture = Texture.load("word.png");
 	
 	public VocabFrame frame;
 	
@@ -51,6 +54,8 @@ public class GameFrame extends JFrame implements WindowListener
 	public DefComponent def1;
 	public DefComponent def2;
 	public DefComponent def3;
+	
+	public WordComponent wordComp;
 	
 	public GameFrame(VocabFrame f)
 	{
@@ -77,31 +82,6 @@ public class GameFrame extends JFrame implements WindowListener
 					onSpace();
 				}
 			}
-		});
-		addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) 
-			{
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) 
-			{
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-
-			@Override
-			public void mouseExited(MouseEvent e) {}
 		});
 		
 		answerLabel = new JLabel();
@@ -151,6 +131,11 @@ public class GameFrame extends JFrame implements WindowListener
 		def3.setSize(384, 48);
 		def3.setLocation(60, 400);
 		add(def3);
+		
+		wordComp = new WordComponent();
+		wordComp.setSize(200, 100);
+		wordComp.setLocation(156, 30);
+		add(wordComp);
 	}
 	
 	public void updateGame()
@@ -163,6 +148,7 @@ public class GameFrame extends JFrame implements WindowListener
 		if(wordIndex == -1)
 		{
 			updateDefs(false);
+			wordComp.setVisible(false);
 			
 			answerLabel.setText("Round " + (game.userPoints.size()+1));
 			answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
@@ -177,6 +163,7 @@ public class GameFrame extends JFrame implements WindowListener
 		else if(!activeWord)
 		{
 			updateDefs(false);
+			wordComp.setVisible(false);
 			
 			answerLabel.setText(correct ? "Correct" : "Incorrect");
 			answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
@@ -197,6 +184,8 @@ public class GameFrame extends JFrame implements WindowListener
 		else {
 			updateDefs(true);
 			initDefs(rand.nextInt(4));
+			wordComp.setVisible(true);
+			wordComp.setWord(getCurrentWord().split(WordListHandler.splitter.toString())[0]);
 			
 			getContentPane().setBackground(Color.LIGHT_GRAY);
 			
@@ -280,15 +269,15 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		while(definitions.size() < 4)
 		{
-			String def = VocabCrack.instance().loadedList.get(rand.nextInt(VocabCrack.instance().loadedList.size()));
+			String def = VocabCrack.instance().loadedList.get(rand.nextInt(VocabCrack.instance().loadedList.size())).split(WordListHandler.splitter.toString())[1];
 			
-			if(!def.equals(getCurrentWord().split("|")[1]))
+			if(!def.equals(getCurrentWord().split(WordListHandler.splitter.toString())[1]))
 			{
 				definitions.add(def);
 			}
 		}
 		
-		definitions.set(correct, getCurrentWord().split("|")[1]);
+		definitions.set(correct, getCurrentWord().split(WordListHandler.splitter.toString())[1]);
 		
 		return definitions;
 	}
@@ -353,7 +342,7 @@ public class GameFrame extends JFrame implements WindowListener
 		public Texture texture;
 		public Texture highlight = Texture.load("highlight.png");
 		
-		public JLabel defLabel;
+		public String text;
 		
 		public boolean isHovering;
 		public boolean correct;
@@ -362,12 +351,6 @@ public class GameFrame extends JFrame implements WindowListener
 		{
 			index = i;
 			texture = Texture.load("def" + i + ".png");
-			
-			defLabel = new JLabel();
-			defLabel.setSize(300, 40);
-			defLabel.setLocation(4, 4);
-			defLabel.setForeground(Color.WHITE);
-			defLabel.setVisible(true);
 			
 			addMouseListener(this);
 			setVisible(false);
@@ -379,9 +362,9 @@ public class GameFrame extends JFrame implements WindowListener
 			super.setSize(width+8, height+8);
 		}
 		
-		public void setText(String text)
+		public void setText(String s)
 		{
-			defLabel.setText(text);
+			text = s;
 		}
 		
 		public void setCorrect(boolean b)
@@ -434,6 +417,40 @@ public class GameFrame extends JFrame implements WindowListener
 			}
 			
 			texture.draw(g, 4, 4, getWidth()-8, getHeight()-8);
+			
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Helvetica", Font.BOLD, 14));
+			g.drawString(text, 12, 32);
+		}
+	}
+	
+	public class WordComponent extends JComponent
+	{
+		private static final long serialVersionUID = 1L;
+		
+		public Font font = new Font("Helvetica", Font.BOLD, 24);
+		public String word;
+		
+		public void setWord(String s)
+		{
+			word = s;
+			
+			repaint();
+		}
+		
+		@Override
+		public void paintComponent(Graphics g)
+		{
+			super.paintComponent(g);
+			
+			wordTexture.draw(g, 0, 0, getWidth(), getHeight());
+			
+			if(word != null)
+			{
+				g.setColor(Color.BLACK);
+				g.setFont(font);
+				g.drawString(word, (getWidth()/2)-(Utilities.getWidth(font, word)/2), 56);
+			}
 		}
 	}
 }

@@ -16,6 +16,8 @@ public class WordListHandler
 {
 	public static File wordListDir = new File(getHomeDirectory() + File.separator + "Documents" + File.separator + "VocabCrack" + File.separator + "Word Lists");
 	
+	public static Character splitter = new Character('>');
+	
 	public static void init()
 	{
 		try {
@@ -61,7 +63,7 @@ public class WordListHandler
 				
 				while((readingLine = reader.readLine()) != null)
 				{
-					String[] split = readingLine.trim().split(":");
+					String[] split = readingLine.trim().split(splitter.toString());
 					
 					if(split.length != 2)
 					{
