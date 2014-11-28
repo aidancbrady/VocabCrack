@@ -46,12 +46,19 @@ public final class Utilities
 	{
 		if(dataLoaded)
 		{
-			if(!latestVersion.equals(VocabCrack.VERSION))
+			VocabCrack.instance().frame.options.updateData();
+			
+			if(!isLatestVersion())
 			{
 				JOptionPane.showMessageDialog(VocabCrack.instance().frame, "A new version is available. Check the options menu after logging in for details.");
 				VocabCrack.instance().frame.menu.optionsButton.setText("Options (1)");
 			}
 		}
+	}
+	
+	public static boolean isLatestVersion()
+	{
+		return latestVersion.equals(VocabCrack.VERSION);
 	}
 	
 	public static List<String> getHTML(String urlToRead)

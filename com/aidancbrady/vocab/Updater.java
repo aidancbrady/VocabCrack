@@ -17,11 +17,10 @@ public class Updater
 		
 		public OptionsPanel panel;
 		
-		public int bytesDownloaded;
-		
 		public UpdateThread(OptionsPanel p)
 		{
 			panel = p;
+			setDaemon(false);
 		}
 		
 		@Override
@@ -39,6 +38,9 @@ public class Updater
 						FileOutputStream output = new FileOutputStream(download);
 						InputStream stream = createURL().openStream();
 						
+						panel.progressLabel.setVisible(true);
+						
+						int bytesDownloaded = 0;
 						int lastBytesDownloaded = 0;
 						byte[] buffer = new byte[2048];
 						
@@ -47,16 +49,20 @@ public class Updater
 							output.write(buffer, 0, lastBytesDownloaded);
 							buffer = new byte[2048];
 							bytesDownloaded += lastBytesDownloaded;
+							panel.updateProgress(bytesDownloaded);
 						}
+						
+						panel.progressLabel.setVisible(false);
 						
 						output.close();
 						stream.close();
 						
-						JOptionPane.showMessageDialog(panel, "Successfully updated to the latest version, v" + Utilities.latestVersion + ". Closing in ten seconds...");
-						Thread.sleep(1000*10);
+						JOptionPane.showMessageDialog(panel, "Successfully updated to the latest version, v" + Utilities.latestVersion + ". Restart for changes to take effect.");
 					} catch(Exception e) {
 						JOptionPane.showMessageDialog(panel, "An error occurred trying to update: " + e.getLocalizedMessage());
 						download.delete();
+						
+						panel.progressLabel.setVisible(false);
 					}
 				}
 				else {

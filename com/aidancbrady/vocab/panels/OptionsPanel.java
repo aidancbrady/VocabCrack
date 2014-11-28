@@ -11,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.aidancbrady.vocab.Updater.UpdateThread;
 import com.aidancbrady.vocab.Utilities;
+import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.net.PasswordHandler;
 
@@ -23,10 +25,17 @@ public class OptionsPanel extends JPanel
 	
 	public JButton backButton;
 	public JButton submitButton;
+	public JButton updateButton;
 	
 	public JTextField currentField;
 	public JTextField passwordField;
 	public JTextField confirmField;
+	
+	public JLabel latestLabel;
+	public JLabel versionLabel;
+	public JLabel progressLabel;
+	
+	public boolean updated;
 	
 	public OptionsPanel(VocabFrame f)
 	{
@@ -113,11 +122,65 @@ public class OptionsPanel extends JPanel
 		updateTitle.setSize(200, 40);
 		updateTitle.setLocation(30, 240);
 		add(updateTitle);
+		
+		latestLabel = new JLabel("Latest Version: N/A");
+		latestLabel.setVisible(true);
+		latestLabel.setSize(200, 40);
+		latestLabel.setLocation(32, 268);
+		add(latestLabel);
+		
+		versionLabel = new JLabel("Version: " + VocabCrack.VERSION);
+		versionLabel.setVisible(true);
+		versionLabel.setSize(200, 40);
+		versionLabel.setLocation(32, 298);
+		add(versionLabel);
+		
+		updateButton = new JButton("Update");
+		updateButton.setSize(120, 30);
+		updateButton.setLocation(26, 380);
+		updateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				new UpdateThread(OptionsPanel.this).start();
+			}
+		});
+		updateButton.setEnabled(false);
+		add(updateButton);
+		
+		progressLabel = new JLabel("Version: " + VocabCrack.VERSION);
+		progressLabel.setVisible(false);
+		progressLabel.setSize(200, 40);
+		progressLabel.setLocation(32, 298);
+		add(progressLabel);
 	}
 	
 	public void updateProgress(int bytes)
 	{
+		progressLabel.setText(bytes + " bytes downloaded...");
+	}
+	
+	public void updateData()
+	{
+		if(Utilities.dataLoaded)
+		{
+			String info = Utilities.isLatestVersion() ? " - up-to-date!" : " - outdated!";
+			latestLabel.setText("Latest Version: " + Utilities.latestVersion);
+			versionLabel.setText("Version: " + VocabCrack.VERSION + info);
+			
+			if(!Utilities.isLatestVersion())
+			{
+				updateButton.setEnabled(true);
+			}
+		}
+	}
+	
+	@Override
+	public void setVisible(boolean visible)
+	{
+		super.setVisible(visible);
 		
+		updateData();
 	}
 	
 	public class SubmitListener implements ActionListener

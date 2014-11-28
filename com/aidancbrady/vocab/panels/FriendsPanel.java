@@ -333,6 +333,8 @@ public class FriendsPanel extends JPanel
 			
 			mode = true;
 			
+			requestsButton.setText("Requests");
+			
 			friendsList.setListData(displayedList);
 		}
 		else {
