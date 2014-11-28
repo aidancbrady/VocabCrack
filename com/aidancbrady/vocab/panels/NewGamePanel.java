@@ -168,6 +168,7 @@ public class NewGamePanel extends JPanel
 					Game g = new Game(VocabCrack.instance().account.username, opponent, true);
 					g.setGameType(selectedType);
 					g.activeWords = WordDataHandler.createWordSet();
+					g.listIdentifier = listIdentifier;
 					
 					frame.openGame(g);
 				}

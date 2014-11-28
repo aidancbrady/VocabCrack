@@ -19,7 +19,6 @@ import javax.swing.ListSelectionModel;
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class GameDetailsFrame extends JFrame
@@ -137,8 +136,6 @@ public class GameDetailsFrame extends JFrame
 	
 	public void open(String username)
 	{
-		GameHandler.getInfo(username, this);
-		
 		setAccountData();
 		
 		setVisible(true);
