@@ -60,7 +60,7 @@ public class RegisterHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("REGISTER:" + username + "," + email + "," + password);
+			writer.println("REGISTER:" + username + ":" + email + ":" + password);
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");

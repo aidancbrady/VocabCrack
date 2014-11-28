@@ -41,13 +41,13 @@ public class VocabFrame extends JFrame implements WindowListener
 		setResizable(false);
 		addWindowListener(this);
 		
-		add(login = new LoginPanel(this)).setVisible(false);
+		add(login = new LoginPanel(this));
 		add(register = new RegisterPanel(this)).setVisible(false);
 		add(menu = new MenuPanel(this)).setVisible(false);
 		add(friends = new FriendsPanel(this)).setVisible(false);
 		add(games = new GamesPanel(this)).setVisible(false);
 		add(newGame = new NewGamePanel(this)).setVisible(false);
-		add(options = new OptionsPanel(this));
+		add(options = new OptionsPanel(this)).setVisible(false);
 		
 		Utilities.loadData();
 	}

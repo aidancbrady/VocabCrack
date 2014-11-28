@@ -48,7 +48,7 @@ public class LoginHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("LOGIN:" + username + "," + password);
+			writer.println("LOGIN:" + username + ":" + password);
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");
@@ -58,11 +58,9 @@ public class LoginHandler
 				socket.close();
 				panel.setLoggingIn(false);
 				
-				String[] data = response[1].split(",");
-				
-				Account acct = new Account(username, data[0].trim(), password);
-				acct.setGamesWon(Integer.parseInt(data[1]));
-				acct.setGamesLost(Integer.parseInt(data[2]));
+				Account acct = new Account(username, response[1].trim(), password);
+				acct.setGamesWon(Integer.parseInt(response[2]));
+				acct.setGamesLost(Integer.parseInt(response[3]));
 				
 				VocabCrack.instance().account = acct;
 				VocabCrack.instance().frame.menu.setAccountData();
