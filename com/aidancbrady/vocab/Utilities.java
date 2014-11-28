@@ -24,7 +24,7 @@ public final class Utilities
 	
 	public static boolean dataLoaded;
 	
-	public static Character[] badChars = new Character[] {',', ':', '&', ' '};
+	public static Character[] badChars = new Character[] {',', ':', '&', ' ', '|'};
 	
 	public static int getLabelWidth(JLabel l)
 	{ 
