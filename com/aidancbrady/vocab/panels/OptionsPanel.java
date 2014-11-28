@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.frames.VocabFrame;
+import com.aidancbrady.vocab.net.PasswordHandler;
 
 public class OptionsPanel extends JPanel
 {
@@ -21,6 +22,7 @@ public class OptionsPanel extends JPanel
 	public VocabFrame frame;
 	
 	public JButton backButton;
+	public JButton submitButton;
 	
 	public JTextField currentField;
 	public JTextField passwordField;
@@ -77,7 +79,13 @@ public class OptionsPanel extends JPanel
 		});
 		add(backButton);
 		
-		currentField = new JTextField();
+		submitButton = new JButton("Submit");
+		submitButton.setSize(120, 30);
+		submitButton.setLocation(213, 212);
+		submitButton.addActionListener(new SubmitListener());
+		add(submitButton);
+		
+		currentField = new JPasswordField();
 		currentField.setFocusable(true);
 		currentField.setText("");
 		currentField.setSize(new Dimension(240, 28));
@@ -96,11 +104,28 @@ public class OptionsPanel extends JPanel
 		confirmField.setText("");
 		confirmField.setSize(new Dimension(240, 28));
 		confirmField.setLocation(90, 180);
+		confirmField.addActionListener(new SubmitListener());
 		add(confirmField);
+		
+		JLabel updateTitle = new JLabel("Update Information");
+		updateTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
+		updateTitle.setVisible(true);
+		updateTitle.setSize(200, 40);
+		updateTitle.setLocation(30, 240);
+		add(updateTitle);
 	}
 	
 	public void updateProgress(int bytes)
 	{
 		
+	}
+	
+	public class SubmitListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			PasswordHandler.changePassword(OptionsPanel.this);
+		}
 	}
 }

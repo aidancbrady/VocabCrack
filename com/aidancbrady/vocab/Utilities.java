@@ -40,8 +40,6 @@ public final class Utilities
 	{
 		new DownloadData().start();
 		WordListHandler.init();
-		
-		System.out.println(System.getProperty("user.dir"));
 	}
 	
 	public static void updateCheck()
@@ -51,6 +49,7 @@ public final class Utilities
 			if(!latestVersion.equals(VocabCrack.VERSION))
 			{
 				JOptionPane.showMessageDialog(VocabCrack.instance().frame, "A new version is available. Check the options menu after logging in for details.");
+				VocabCrack.instance().frame.menu.optionsButton.setText("Options (1)");
 			}
 		}
 	}

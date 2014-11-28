@@ -64,7 +64,6 @@ public class FriendHandler
 				}
 				
 				panel.displayedFriends = vec;
-				panel.displayedList = vec;
 				
 				panel.resetList();
 				
@@ -128,9 +127,16 @@ public class FriendHandler
 				}
 				
 				panel.displayedRequests = vec;
-				panel.displayedList = vec;
 				
 				panel.resetList();
+				
+				if(panel.displayedRequests.size() > 0)
+				{
+					panel.requestsButton.setText("Requests (" + panel.displayedRequests.size() + ")");
+				}
+				else {
+					panel.requestsButton.setText("Requests");
+				}
 				
 				return;
 			}
