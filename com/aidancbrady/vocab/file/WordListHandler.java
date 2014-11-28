@@ -71,7 +71,7 @@ public class WordListHandler
 						break;
 					}
 					
-					VocabCrack.instance().loadedList.put(split[0].trim(), split[1].trim());
+					VocabCrack.instance().loadedList.add(readingLine.trim());
 				}
 				
 				reader.close();

@@ -89,7 +89,7 @@ public class WordDataHandler
 		
 		while(list.size() < 10)
 		{
-			String word = list.get(rand.nextInt(list.size()));
+			String word = VocabCrack.instance().loadedList.get(rand.nextInt(VocabCrack.instance().loadedList.size()));
 			
 			if(!list.contains(word) && !VocabCrack.instance().learnedWords.contains(word.split("|")[0]))
 			{
