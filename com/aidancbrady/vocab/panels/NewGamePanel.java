@@ -22,10 +22,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Game.GameType;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.WordListHandler;
+import com.aidancbrady.vocab.file.WordDataHandler;
+import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.tex.Texture;
 
@@ -157,6 +159,23 @@ public class NewGamePanel extends JPanel
 		continueButton = new JButton("Continue");
 		continueButton.setSize(300, 60);
 		continueButton.setLocation(50, 440);
+		continueButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(selectedType != null)
+				{
+					Game g = new Game(VocabCrack.instance().account.username, opponent, true);
+					g.setGameType(selectedType);
+					g.activeWords = WordDataHandler.createWordSet();
+					
+					frame.openGame(g);
+				}
+				else {
+					JOptionPane.showMessageDialog(NewGamePanel.this, "Please select a game type.");
+				}
+			}
+		});
 		add(continueButton);
 		
 		singleButton = new JToggleButton("Single");

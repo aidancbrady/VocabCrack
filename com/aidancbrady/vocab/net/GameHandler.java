@@ -62,7 +62,6 @@ public class GameHandler
 				for(int i = 1; i < response1.length; i++)
 				{
 					Game g = Game.readRequest(VocabCrack.instance().account.username, response1[i], ',');
-					g.isRequest = true;
 					g.opponentEmail = response1[++i];
 					vec.add(g);
 				}

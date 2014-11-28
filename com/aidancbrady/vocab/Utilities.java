@@ -14,6 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import com.aidancbrady.vocab.file.WordDataHandler;
+import com.aidancbrady.vocab.file.WordListHandler;
+
 public final class Utilities 
 {
 	public static String latestVersion;
@@ -57,7 +60,9 @@ public final class Utilities
 	public static void loadData()
 	{
 		new DownloadData().start();
+		
 		WordListHandler.init();
+		WordDataHandler.load();
 	}
 	
 	public static void updateCheck()

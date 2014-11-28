@@ -17,6 +17,7 @@ public class Game
 	 * */
 	public String opponent;
 	
+	/** The game type this game is following. */
 	public int gameType;
 	
 	public boolean userTurn = true;
@@ -38,6 +39,9 @@ public class Game
 	 * */
 	public boolean activeRequested;
 	
+	/** List of 10 words that were fabricated by the game host and are still in use. */
+	public List<String> activeWords = new ArrayList<String>();
+	
 	/** Only used client-side */
 	public boolean isRequest;
 	
@@ -56,13 +60,31 @@ public class Game
 		
 		user = activeRequested ? userName : opponentName;
 		opponent = activeRequested ? opponentName : userName;
+		
+		isRequest = true;
 	}
 	
-	public Game getRequestPair()
+	public Game getNewRequestPair()
 	{
 		Game g = new Game(opponent, user, !activeRequested);
 		g.gameType = gameType;
 		g.userTurn = !g.userTurn;
+		g.userPoints = userPoints;
+		
+		return g;
+	}
+	
+	public Game getNewPair()
+	{
+		Game g = new Game(opponent, user);
+		
+		String temp = opponent;
+		opponent = user;
+		user = temp;
+		
+		List<Integer> temp1 = opponentPoints;
+		opponentPoints = userPoints;
+		userPoints = temp1;
 		
 		return g;
 	}
@@ -82,6 +104,15 @@ public class Game
 		return this;
 	}
 	
+	public Game convertToPast()
+	{
+		userPoints.clear();
+		opponentPoints.clear();
+		activeWords.clear();
+		
+		return this;
+	}
+	
 	public static Game readDefault(String user, String s, Character splitter)
 	{
 		String[] split = s.split(splitter.toString());
@@ -96,7 +127,9 @@ public class Game
 		g.userTurn = Boolean.parseBoolean(split[2]);
 		
 		int index = g.readScoreList(split, 3, true);
-		g.readScoreList(split, index, false);
+		index = g.readScoreList(split, index, false);
+		
+		g.readWordList(split[index]);
 		
 		return g;
 	}
@@ -114,7 +147,9 @@ public class Game
 		g.gameType = Integer.parseInt(split[2]);
 		g.userTurn = Boolean.parseBoolean(split[3]);
 		
-		g.readScoreList(split, 4, true);
+		int index = g.readScoreList(split, 4, true);
+		
+		g.readWordList(split[index]);
 		
 		return g;
 	}
@@ -130,6 +165,9 @@ public class Game
 		
 		writeScoreList(userPoints, str, splitter);
 		writeScoreList(opponentPoints, str, splitter);
+		
+		writeWordList(str);
+		str.append(splitter);
 	}
 	
 	public void writeRequest(StringBuilder str, Character splitter)
@@ -144,6 +182,9 @@ public class Game
 		str.append(splitter);
 		
 		writeScoreList(userPoints, str, splitter);
+		
+		writeWordList(str);
+		str.append(splitter);
 	}
 	
 	public void writeScoreList(List<Integer> score, StringBuilder str, Character split)
@@ -172,6 +213,37 @@ public class Game
 		}
 		
 		return maxIndex+1;
+	}
+	
+	public void writeWordList(StringBuilder str)
+	{
+		for(String s : activeWords)
+		{
+			str.append(s);
+			str.append("&");
+		}
+	}
+	
+	public void readWordList(String s)
+	{
+		String[] split = s.split("&");
+		
+		for(String word : split)
+		{
+			activeWords.add(word.trim());
+		}
+	}
+	
+	public String getWinner()
+	{
+		int max = GameType.values()[gameType].getWinningScore();
+		
+		return getUserScore() == max ? user : (getOpponentScore() == max ? opponent : null);
+	}
+	
+	public boolean hasWinner()
+	{
+		return getWinner() != null;
 	}
 	
 	public String getRequesterName()
@@ -280,20 +352,27 @@ public class Game
 	
 	public static enum GameType
 	{
-		SINGLE("Single Game"),
-		BEST_OF_3("Best of 3"),
-		BEST_OF_5("Best of 5");
+		SINGLE(1, "Single Game"),
+		BEST_OF_3(2, "Best of 3"),
+		BEST_OF_5(3, "Best of 5");
 		
 		private String desc;
+		private int max;
 		
-		private GameType(String s)
+		private GameType(int i, String s)
 		{
+			max = i;
 			desc = s;
 		}
 		
 		public String getDescription()
 		{
 			return desc;
+		}
+		
+		public int getWinningScore()
+		{
+			return max;
 		}
 	}
 }

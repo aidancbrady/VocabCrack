@@ -1,4 +1,4 @@
-package com.aidancbrady.vocab;
+package com.aidancbrady.vocab.file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.panels.NewGamePanel;
 
 public class WordListHandler 

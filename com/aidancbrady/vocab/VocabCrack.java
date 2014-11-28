@@ -1,7 +1,9 @@
 package com.aidancbrady.vocab;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -19,6 +21,8 @@ public class VocabCrack
 	public VocabFrame frame;
 	
 	public Map<String, String> loadedList = new HashMap<String, String>();
+	
+	public Set<String> learnedWords = new HashSet<String>();
 	
 	public Account account = Account.DEFAULT;
 	

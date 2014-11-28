@@ -6,7 +6,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.aidancbrady.vocab.Account;
+import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 import com.aidancbrady.vocab.panels.GamesPanel;
@@ -50,6 +50,8 @@ public class VocabFrame extends JFrame implements WindowListener
 		add(games = new GamesPanel(this)).setVisible(false);
 		add(newGame = new NewGamePanel(this)).setVisible(false);
 		add(options = new OptionsPanel(this)).setVisible(false);
+		
+		openGame(Game.DEFAULT);
 		
 		Utilities.loadData();
 	}
@@ -171,9 +173,17 @@ public class VocabFrame extends JFrame implements WindowListener
 		gameDetailsFrame.open(opponent);
 	}
 	
-	public void openGame()
+	public void openGame(Game g)
 	{
+		if(gameFrame == null)
+		{
+			gameFrame = new GameFrame(this);
+		}
+		else {
+			gameFrame.toFront();
+		}
 		
+		gameFrame.initGame(g);
 	}
 	
 	@Override
