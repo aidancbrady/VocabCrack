@@ -18,6 +18,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -42,12 +43,14 @@ public class NewGamePanel extends JPanel
 	public GameType selectedType;
 	public String listIdentifier = "Default";
 	public Vector<String> displayedList = new Vector<String>();
+	public String opponent = "Guest";
 	
 	public JButton loadButton;
 	public JButton refreshButton;
 	public JButton continueButton;
 	public JButton backButton;
 	
+	public JLabel titleLabel;
 	public JLabel typeLabel;
 	public JLabel listLabel;
 	
@@ -64,12 +67,12 @@ public class NewGamePanel extends JPanel
 		setSize(400, 600);
 		setLayout(null);
 		
-		JLabel title = new JLabel("New Game");
-		title.setFont(new Font("Helvetica", Font.BOLD, 14));
-		title.setVisible(true);
-		title.setSize(200, 40);
-		title.setLocation(200-(int)((float)Utilities.getLabelWidth(title)/2F), 10);
-		add(title);
+		titleLabel = new JLabel("New Game");
+		titleLabel.setFont(new Font("Helvetica", Font.BOLD, 14));
+		titleLabel.setVisible(true);
+		titleLabel.setSize(200, 40);
+		titleLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(titleLabel)/2F), 10);
+		add(titleLabel);
 		
 		typeLabel = new JLabel("Select a game type");
 		typeLabel.setVisible(true);
@@ -131,7 +134,7 @@ public class NewGamePanel extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent event)
 			{
-				if(event.getClickCount() == 2)
+				if(event.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(event))
 				{
 					loadList();
 				}
@@ -146,10 +149,10 @@ public class NewGamePanel extends JPanel
 		wordListsList.setEnabled(true);
 		wordListsList.setToolTipText("Add new word lists by adding them to your 'Word Lists' folder");
 		wordListsList.setSelectionInterval(1, 1);
-		JScrollPane onlinePane = new JScrollPane(wordListsList);
-		onlinePane.setSize(new Dimension(200, 160));
-		onlinePane.setLocation(100, 180);
-		add(onlinePane);
+		JScrollPane scroll = new JScrollPane(wordListsList);
+		scroll.setSize(new Dimension(200, 160));
+		scroll.setLocation(100, 180);
+		add(scroll);
 		
 		continueButton = new JButton("Continue");
 		continueButton.setSize(300, 60);
@@ -174,7 +177,7 @@ public class NewGamePanel extends JPanel
 					selectedType = null;
 				}
 				
-				updateLabels();
+				updateInfo();
 			}
 		});
 		add(singleButton);
@@ -197,7 +200,7 @@ public class NewGamePanel extends JPanel
 					selectedType = null;
 				}
 				
-				updateLabels();
+				updateInfo();
 			}
 		});
 		add(threeButton);
@@ -220,7 +223,7 @@ public class NewGamePanel extends JPanel
 					selectedType = null;
 				}
 				
-				updateLabels();
+				updateInfo();
 			}
 		});
 		add(fiveButton);
@@ -241,8 +244,11 @@ public class NewGamePanel extends JPanel
 		setVisible(true);
 	}
 	
-	public void updateLabels()
+	public void updateInfo()
 	{
+		titleLabel.setText("Game with " + opponent);
+		titleLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(titleLabel)/2F), 10);
+		
 		if(selectedType != null)
 		{
 			typeLabel.setText("Game type: " + selectedType.getDescription());
@@ -259,9 +265,10 @@ public class NewGamePanel extends JPanel
 		wordListsList.setListData(displayedList);
 	}
 	
-	public void setReference(boolean ref)
+	public void initInfo(String acct, JPanel panel)
 	{
-		reference = ref;
+		opponent = acct;
+		reference = panel == frame.friends ? true : false;
 	}
 	
 	@Override
@@ -277,9 +284,10 @@ public class NewGamePanel extends JPanel
 			selectedType = null;
 			listIdentifier = "Default";
 			displayedList.clear();
+			opponent = "Guest";
 		}
 		
-		updateLabels();
+		updateInfo();
 	}
 	
 	public void loadList()
@@ -292,7 +300,7 @@ public class NewGamePanel extends JPanel
 			{
 				listIdentifier = id;
 				JOptionPane.showMessageDialog(NewGamePanel.this, "Loaded '" + id + "' word list");
-				updateLabels();
+				updateInfo();
 			}
 		}
 	}
@@ -338,7 +346,7 @@ public class NewGamePanel extends JPanel
 	public void refreshList()
 	{
 		displayedList = WordListHandler.listIdentifiers();
-		updateLabels();
+		updateInfo();
 	}
 	
 	public class PopupMenu extends JPopupMenu

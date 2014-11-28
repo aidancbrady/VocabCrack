@@ -66,7 +66,7 @@ public class PasswordHandler
 			{
 				socket.close();
 				
-				JOptionPane.showMessageDialog(panel, "Successfully updated password.");
+				JOptionPane.showMessageDialog(panel, "Successfully updated password, logging out.");
 				
 				VocabCrack.instance().logout();
 				

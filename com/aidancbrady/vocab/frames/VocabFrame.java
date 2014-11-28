@@ -4,7 +4,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 import com.aidancbrady.vocab.panels.GamesPanel;
@@ -107,8 +109,10 @@ public class VocabFrame extends JFrame implements WindowListener
 		options.setVisible(false);
 	}
 	
-	public void openNewGame()
+	public void openNewGame(String acct, JPanel panel)
 	{
+		newGame.initInfo(acct, panel);
+		
 		login.setVisible(false);
 		register.setVisible(false);
 		menu.setVisible(false);

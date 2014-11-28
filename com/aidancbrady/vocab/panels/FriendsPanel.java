@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -92,7 +93,7 @@ public class FriendsPanel extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent event)
 			{
-				if(event.getClickCount() == 2)
+				if(event.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(event))
 				{
 					if(mode)
 					{
@@ -418,10 +419,7 @@ public class FriendsPanel extends JPanel
 					{
 						if(GameHandler.confirmGame(a.username, this))
 						{
-							//New game
-						}
-						else {
-							JOptionPane.showMessageDialog(this, "Unable to authenticate");
+							frame.openNewGame(a.username, this);
 						}
 					}
 				}

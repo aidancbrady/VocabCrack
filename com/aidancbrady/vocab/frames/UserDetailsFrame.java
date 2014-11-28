@@ -76,11 +76,9 @@ public class UserDetailsFrame extends JFrame
 				{
 					if(GameHandler.confirmGame(acct.username, frame.friends))
 					{
+						frame.openNewGame(acct.username, frame.friends);
+						
 						setVisible(false);
-						//New game
-					}
-					else {
-						JOptionPane.showMessageDialog(frame.friends, "Unable to authenticate");
 					}
 				}
 
