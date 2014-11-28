@@ -19,8 +19,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.Game;
+import com.aidancbrady.vocab.Game.GameType;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
+import com.aidancbrady.vocab.file.WordDataHandler;
 import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
@@ -45,6 +47,7 @@ public class GameFrame extends JFrame implements WindowListener
 	public int wordIndex = -1;
 	public boolean activeWord;
 	public boolean correct;
+	public boolean complete;
 	
 	public float transparency;
 	
@@ -53,6 +56,7 @@ public class GameFrame extends JFrame implements WindowListener
 	
 	public JLabel userLabel;
 	public JLabel opponentLabel;
+	public JLabel typeLabel;
 	
 	public JLabel remainingLabel;
 	public JLabel timerLabel;
@@ -121,6 +125,13 @@ public class GameFrame extends JFrame implements WindowListener
 		opponentLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 16);
 		add(opponentLabel);
 		
+		typeLabel = new JLabel();
+		typeLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
+		typeLabel.setVisible(true);
+		typeLabel.setSize(300, 40);
+		typeLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 6);
+		add(typeLabel);
+		
 		remainingLabel = new JLabel("Remaining: 9");
 		remainingLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
 		remainingLabel.setVisible(false);
@@ -157,13 +168,13 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		wordComp = new WordComponent();
 		wordComp.setSize(200, 100);
-		wordComp.setLocation(156, 30);
+		wordComp.setLocation(156, 48);
 		add(wordComp);
 		
 		wordLabel = new JLabel();
-		wordLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
+		wordLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
 		wordLabel.setVisible(false);
-		wordLabel.setSize(300, 40);
+		wordLabel.setSize(400, 40);
 		wordLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(wordLabel)/2F), 340);
 		add(wordLabel);
 	}
@@ -174,6 +185,9 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		opponentLabel.setText((game.isRequest ? game.getRequestOpponent() : game.opponent) + ": " + game.getOpponentScore());
 		opponentLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 16);
+	
+		typeLabel.setText(GameType.values()[game.gameType].getDescription());
+		typeLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 6);
 		
 		if(wordIndex == -1)
 		{
@@ -226,24 +240,36 @@ public class GameFrame extends JFrame implements WindowListener
 			}
 		}
 		else {
-			updateDefs(true);
-			initDefs(rand.nextInt(4));
-			wordComp.setVisible(true);
-			wordComp.setWord(getCurrentWord().split(WordListHandler.splitter.toString())[0]);
-			
-			wordLabel.setVisible(false);
-			
-			(timer = new TimerThread()).start();
-			
-			remainingLabel.setVisible(true);
-			
-			timerLabel.setVisible(true);
-			timerLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 512);
-			
-			answerLabel.setVisible(false);
-			statusLabel.setVisible(false);
-			
-			getContentPane().setBackground(Color.LIGHT_GRAY);
+			if(wordIndex < 10)
+			{
+				updateDefs(true);
+				initDefs(rand.nextInt(4));
+				wordComp.setVisible(true);
+				wordComp.setWord(getCurrentWord().split(WordListHandler.splitter.toString())[0]);
+				
+				wordLabel.setVisible(false);
+				
+				(timer = new TimerThread()).start();
+				
+				remainingLabel.setVisible(true);
+				
+				timerLabel.setVisible(true);
+				timerLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 512);
+				
+				answerLabel.setVisible(false);
+				statusLabel.setVisible(false);
+				
+				getContentPane().setBackground(Color.LIGHT_GRAY);
+			}
+			else {
+				answerLabel.setText("Your score: " + amountCorrect + "/10");
+				answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
+				answerLabel.setVisible(true);
+				
+				statusLabel.setText("Press spacebar to exit");
+				statusLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(statusLabel)/2F), 240);
+				statusLabel.setVisible(true);
+			}
 		}
 	}
 	
@@ -281,11 +307,57 @@ public class GameFrame extends JFrame implements WindowListener
 			
 			updateGame();
 		}
-		else if(wordIndex > 0 && wordIndex < 10 && !activeWord)
+		else if(wordIndex > 0 && !activeWord)
 		{
 			activeWord = true;
 			
 			updateGame();
+		}
+		else if(wordIndex == 10 && activeWord)
+		{
+			game.userPoints.add(amountCorrect);
+			
+			if(game.hasWinner())
+			{
+				String score = null;
+				
+				if(game.getWinner().equals(game.user))
+				{
+					score = game.getUserScore() + " to " + game.getOpponentScore();
+					JOptionPane.showMessageDialog(this, "You beat " + game.opponent + " " + score + "!");
+				}
+				else {
+					score = game.getOpponentScore() + " to " + game.getUserScore();
+					JOptionPane.showMessageDialog(this, game.opponent + " beat you " + score + "!");
+				}
+			}
+			else {
+				boolean roundOver = game.userPoints.size() == game.opponentPoints.size();
+				int index = game.userPoints.size()-1;
+				String score = game.getUserScore() + " to " + game.getOpponentScore();
+				
+				if(roundOver)
+				{
+					String points = game.userPoints.get(index) + " to " + game.opponentPoints.get(index);
+					
+					if(game.userPoints.get(index) > game.opponentPoints.get(index))
+					{
+						JOptionPane.showMessageDialog(this, "You won the round " + points + "! The game record is now " + score + ".");
+					}
+					else if(game.userPoints.get(index) == game.opponentPoints.get(index))
+					{
+						JOptionPane.showMessageDialog(this, "You tied the round " + points + "! The game record is now " + score + ".");
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "You lost the round " + points + "! The game record is now " + score + ".");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "You completed the round with " + game.userPoints.get(index) + " points! The game record is now " + score + ".");
+				}
+			}
+			
+			exitGame();
 		}
 	}
 	
@@ -298,6 +370,10 @@ public class GameFrame extends JFrame implements WindowListener
 		if(correct)
 		{
 			amountCorrect++;
+			
+			String prev = game.activeWords.get(wordIndex-1).split(WordListHandler.splitter.toString())[0];
+			VocabCrack.instance().learnedWords.add(prev);
+			WordDataHandler.save();
 		}
 		
 		remainingLabel.setText("Remaining: " + (10-(wordIndex+1)));
@@ -305,6 +381,7 @@ public class GameFrame extends JFrame implements WindowListener
 		if(wordIndex == 10)
 		{
 			remainingLabel.setText("Remaining: 9");
+			complete = true;
 		}
 		
 		if(timer != null)
@@ -322,6 +399,8 @@ public class GameFrame extends JFrame implements WindowListener
 		game = Game.DEFAULT;
 		wordIndex = -1;
 		activeWord = false;
+		complete = false;
+		amountCorrect = 0;
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
@@ -420,6 +499,7 @@ public class GameFrame extends JFrame implements WindowListener
 				}
 				
 				timerLabel.setText("Timer: " + time + "s");
+				timerLabel.setLocation(496-Utilities.getLabelWidth(timerLabel), 512);
 			}
 		}
 	}
