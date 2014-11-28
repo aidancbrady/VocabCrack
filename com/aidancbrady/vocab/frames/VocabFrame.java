@@ -2,12 +2,15 @@ package com.aidancbrady.vocab.frames;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
+import com.aidancbrady.vocab.panels.ActiveGamePanel;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 import com.aidancbrady.vocab.panels.GamesPanel;
 import com.aidancbrady.vocab.panels.LoginPanel;
@@ -20,6 +23,8 @@ public class VocabFrame extends JFrame implements WindowListener
 {
 	private static final long serialVersionUID = 1L;
 	
+	public List<JPanel> panels = new ArrayList<JPanel>();
+	
 	public LoginPanel login;
 	public RegisterPanel register;
 	public MenuPanel menu;
@@ -27,6 +32,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	public GamesPanel games;
 	public NewGamePanel newGame;
 	public OptionsPanel options;
+	public ActiveGamePanel activeGame;
 	
 	public NewFriendFrame newFrame;
 	public UserDetailsFrame userDetailsFrame;
@@ -43,96 +49,73 @@ public class VocabFrame extends JFrame implements WindowListener
 		setResizable(false);
 		addWindowListener(this);
 		
-		add(login = new LoginPanel(this));
-		add(register = new RegisterPanel(this)).setVisible(false);
-		add(menu = new MenuPanel(this)).setVisible(false);
-		add(friends = new FriendsPanel(this)).setVisible(false);
-		add(games = new GamesPanel(this)).setVisible(false);
-		add(newGame = new NewGamePanel(this)).setVisible(false);
-		add(options = new OptionsPanel(this)).setVisible(false);
+		addPanel(login = new LoginPanel(this)).setVisible(false);
+		addPanel(register = new RegisterPanel(this)).setVisible(false);
+		addPanel(menu = new MenuPanel(this)).setVisible(false);
+		addPanel(friends = new FriendsPanel(this)).setVisible(false);
+		addPanel(games = new GamesPanel(this)).setVisible(false);
+		addPanel(newGame = new NewGamePanel(this)).setVisible(false);
+		addPanel(options = new OptionsPanel(this)).setVisible(false);
+		addPanel(activeGame = new ActiveGamePanel(this)).setVisible(true);
 		
-		openGame(Game.DEFAULT);
+		//openGame(Game.DEFAULT);
 		
 		Utilities.loadData();
 	}
 	
+	public JPanel addPanel(JPanel panel)
+	{
+		add(panel);
+		panels.add(panel);
+		
+		return panel;
+	}
+	
+	public void open(JPanel panel)
+	{
+		for(JPanel p : panels)
+		{
+			p.setVisible(false);
+		}
+		
+		panel.setVisible(true);
+	}
+	
 	public void openLogin()
 	{
-		login.setVisible(true);
-		register.setVisible(false);
-		menu.setVisible(false);
-		friends.setVisible(false);
-		games.setVisible(false);
-		newGame.setVisible(false);
-		options.setVisible(false);
+		open(login);
 	}
 	
 	public void openRegister()
 	{
-		login.setVisible(false);
-		register.setVisible(true);
-		menu.setVisible(false);
-		friends.setVisible(false);
-		games.setVisible(false);
-		newGame.setVisible(false);
-		options.setVisible(false);
+		open(register);
 	}
 	
 	public void openMenu()
 	{
-		login.setVisible(false);
-		register.setVisible(false);
-		menu.setVisible(true);
-		friends.setVisible(false);
-		games.setVisible(false);
-		newGame.setVisible(false);
-		options.setVisible(false);
+		open(menu);
 	}
 	
 	public void openFriends()
 	{
-		login.setVisible(false);
-		register.setVisible(false);
-		menu.setVisible(false);
-		friends.setVisible(true);
-		games.setVisible(false);
-		newGame.setVisible(false);
-		options.setVisible(false);
+		open(friends);
 	}
 	
 	public void openGames()
 	{
-		login.setVisible(false);
-		register.setVisible(false);
-		menu.setVisible(false);
-		friends.setVisible(false);
-		games.setVisible(true);
-		newGame.setVisible(false);
-		options.setVisible(false);
+		open(games);
 	}
 	
 	public void openNewGame(String acct, JPanel panel)
 	{
 		newGame.initInfo(acct, panel);
 		
-		login.setVisible(false);
-		register.setVisible(false);
-		menu.setVisible(false);
-		friends.setVisible(false);
-		games.setVisible(false);
-		newGame.setVisible(true);
-		options.setVisible(false);
+		open(newGame);
 	}
 	
 	public void openOptions()
 	{
-		login.setVisible(false);
-		register.setVisible(false);
-		menu.setVisible(false);
-		friends.setVisible(false);
-		games.setVisible(false);
-		newGame.setVisible(false);
-		options.setVisible(true);
+		open(options);
 	}
 	
 	public void openNewFriend()
@@ -175,6 +158,8 @@ public class VocabFrame extends JFrame implements WindowListener
 	
 	public void openGame(Game g)
 	{
+		open(activeGame);
+		
 		if(gameFrame == null)
 		{
 			gameFrame = new GameFrame(this);
