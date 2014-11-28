@@ -113,10 +113,10 @@ public class GamesPanel extends JPanel
 		gamesList.setSelectionInterval(1, 1);
 		gamesList.setCellRenderer(new GameCellRenderer());
 		gamesList.setToolTipText("Games in progress and past games");
-		JScrollPane onlinePane = new JScrollPane(gamesList);
-		onlinePane.setSize(new Dimension(400, 250));
-		onlinePane.setLocation(0, 100);
-		add(onlinePane);
+		JScrollPane scroll = new JScrollPane(gamesList);
+		scroll.setSize(new Dimension(400, 250));
+		scroll.setLocation(0, 100);
+		add(scroll);
 		
 		backButton = new JButton("Back");
 		backButton.setSize(60, 30);

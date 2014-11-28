@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.aidancbrady.vocab.Updater.UpdateThread;
@@ -34,6 +36,10 @@ public class OptionsPanel extends JPanel
 	public JLabel latestLabel;
 	public JLabel versionLabel;
 	public JLabel progressLabel;
+	public JLabel updateLabel;
+	
+	public JTextArea updateText;
+	public JTextArea newsText;
 	
 	public boolean updated;
 	
@@ -137,7 +143,7 @@ public class OptionsPanel extends JPanel
 		
 		updateButton = new JButton("Update");
 		updateButton.setSize(120, 30);
-		updateButton.setLocation(26, 380);
+		updateButton.setLocation(26, 464);
 		updateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -148,16 +154,41 @@ public class OptionsPanel extends JPanel
 		updateButton.setEnabled(false);
 		add(updateButton);
 		
-		progressLabel = new JLabel("Version: " + VocabCrack.VERSION);
+		progressLabel = new JLabel("N/A");
 		progressLabel.setVisible(false);
 		progressLabel.setSize(200, 40);
-		progressLabel.setLocation(32, 298);
+		progressLabel.setLocation(150, 458);
 		add(progressLabel);
-	}
-	
-	public void updateProgress(int bytes)
-	{
-		progressLabel.setText(bytes + " bytes downloaded...");
+		
+		updateLabel = new JLabel("N/A:");
+		updateLabel.setVisible(true);
+		updateLabel.setSize(200, 40);
+		updateLabel.setLocation(32, 328);
+		add(updateLabel);
+		
+		updateText = new JTextArea();
+		updateText.setEditable(false);
+		updateText.setLineWrap(true);
+		updateText.setWrapStyleWord(true);
+		JScrollPane updateScroll = new JScrollPane(updateText);
+		updateScroll.setSize(new Dimension(260, 54));
+		updateScroll.setLocation(120, 336);
+		add(updateScroll);
+		
+		JLabel news = new JLabel("News:");
+		news.setVisible(true);
+		news.setSize(200, 40);
+		news.setLocation(32, 392);
+		add(news);
+		
+		newsText = new JTextArea();
+		newsText.setEditable(false);
+		newsText.setLineWrap(true);
+		newsText.setWrapStyleWord(true);
+		JScrollPane scroll = new JScrollPane(newsText);
+		scroll.setSize(new Dimension(260, 54));
+		scroll.setLocation(120, 400);
+		add(scroll);
 	}
 	
 	public void updateData()
@@ -167,8 +198,12 @@ public class OptionsPanel extends JPanel
 			String info = Utilities.isLatestVersion() ? " - up-to-date!" : " - outdated!";
 			latestLabel.setText("Latest Version: " + Utilities.latestVersion);
 			versionLabel.setText("Version: " + VocabCrack.VERSION + info);
+			updateLabel.setText("v" + Utilities.latestVersion + " info:");
 			
-			if(!Utilities.isLatestVersion())
+			updateText.setText(Utilities.versionNews);
+			newsText.setText(Utilities.news);
+			
+			if(!Utilities.isLatestVersion() && !updated)
 			{
 				updateButton.setEnabled(true);
 			}

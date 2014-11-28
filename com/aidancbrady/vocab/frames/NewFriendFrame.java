@@ -89,10 +89,10 @@ public class NewFriendFrame extends JFrame
 		friendsList.setEnabled(true);
 		friendsList.setSelectionInterval(1, 1);
 		friendsList.setToolTipText("Users that match your search query");
-		JScrollPane onlinePane = new JScrollPane(friendsList);
-		onlinePane.setSize(new Dimension(300, 250));
-		onlinePane.setLocation(0, 100);
-		add(onlinePane);
+		JScrollPane scroll = new JScrollPane(friendsList);
+		scroll.setSize(new Dimension(300, 250));
+		scroll.setLocation(0, 100);
+		add(scroll);
 		
 		addButton = new JButton("Add Friend");
 		addButton.setSize(150, 30);

@@ -28,6 +28,11 @@ public class Updater
 		{
 			if(Utilities.dataLoaded)
 			{
+				panel.progressLabel.setVisible(true);
+				panel.progressLabel.setText("Preparing for download...");
+				
+				panel.updateButton.setEnabled(false);
+				
 				if(findAndDelete())
 				{
 					File download = new File(appDir, Utilities.updateName);
@@ -38,8 +43,6 @@ public class Updater
 						FileOutputStream output = new FileOutputStream(download);
 						InputStream stream = createURL().openStream();
 						
-						panel.progressLabel.setVisible(true);
-						
 						int bytesDownloaded = 0;
 						int lastBytesDownloaded = 0;
 						byte[] buffer = new byte[2048];
@@ -49,20 +52,18 @@ public class Updater
 							output.write(buffer, 0, lastBytesDownloaded);
 							buffer = new byte[2048];
 							bytesDownloaded += lastBytesDownloaded;
-							panel.updateProgress(bytesDownloaded);
+							panel.progressLabel.setText(bytesDownloaded/1000 + " KB downloaded...");
 						}
-						
-						panel.progressLabel.setVisible(false);
 						
 						output.close();
 						stream.close();
+						
+						panel.updated = true;
 						
 						JOptionPane.showMessageDialog(panel, "Successfully updated to the latest version, v" + Utilities.latestVersion + ". Restart for changes to take effect.");
 					} catch(Exception e) {
 						JOptionPane.showMessageDialog(panel, "An error occurred trying to update: " + e.getLocalizedMessage());
 						download.delete();
-						
-						panel.progressLabel.setVisible(false);
 					}
 				}
 				else {
@@ -72,6 +73,13 @@ public class Updater
 			else {
 				JOptionPane.showMessageDialog(panel, "Initial data was not retrieved from server, try restarting.");
 			}
+			
+			if(!panel.updated)
+			{
+				panel.updateButton.setEnabled(true);
+			}
+			
+			panel.progressLabel.setVisible(false);
 		}
 		
 		public boolean findAndDelete()

@@ -114,10 +114,10 @@ public class FriendsPanel extends JPanel
 		friendsList.setSelectionInterval(1, 1);
 		friendsList.setCellRenderer(new AccountCellRenderer());
 		friendsList.setToolTipText("Friends that have you on their list");
-		JScrollPane onlinePane = new JScrollPane(friendsList);
-		onlinePane.setSize(new Dimension(400, 250));
-		onlinePane.setLocation(0, 100);
-		add(onlinePane);
+		JScrollPane scroll = new JScrollPane(friendsList);
+		scroll.setSize(new Dimension(400, 250));
+		scroll.setLocation(0, 100);
+		add(scroll);
 		
 		backButton = new JButton("Back");
 		backButton.setSize(60, 30);

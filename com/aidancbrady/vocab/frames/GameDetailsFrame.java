@@ -70,10 +70,10 @@ public class GameDetailsFrame extends JFrame
 		scoreList.setEnabled(true);
 		scoreList.setSelectionInterval(1, 1);
 		((DefaultListCellRenderer)scoreList.getCellRenderer()).setHorizontalAlignment(JLabel.CENTER);
-		JScrollPane onlinePane = new JScrollPane(scoreList);
-		onlinePane.setSize(new Dimension(80, 120));
-		onlinePane.setLocation(100, 200);
-		add(onlinePane);
+		JScrollPane scroll = new JScrollPane(scoreList);
+		scroll.setSize(new Dimension(80, 120));
+		scroll.setLocation(100, 200);
+		add(scroll);
 		
 		playButton = new JButton("Play");
 		playButton.setSize(120, 30);
