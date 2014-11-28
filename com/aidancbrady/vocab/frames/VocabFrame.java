@@ -49,16 +49,16 @@ public class VocabFrame extends JFrame implements WindowListener
 		setResizable(false);
 		addWindowListener(this);
 		
-		addPanel(login = new LoginPanel(this)).setVisible(false);
+		addPanel(login = new LoginPanel(this)).setVisible(true);
 		addPanel(register = new RegisterPanel(this)).setVisible(false);
 		addPanel(menu = new MenuPanel(this)).setVisible(false);
 		addPanel(friends = new FriendsPanel(this)).setVisible(false);
 		addPanel(games = new GamesPanel(this)).setVisible(false);
 		addPanel(newGame = new NewGamePanel(this)).setVisible(false);
 		addPanel(options = new OptionsPanel(this)).setVisible(false);
-		addPanel(activeGame = new ActiveGamePanel(this)).setVisible(true);
+		addPanel(activeGame = new ActiveGamePanel(this)).setVisible(false);
 		
-		openGame(Game.DEFAULT);
+		//openGame(Game.DEFAULT);
 		
 		Utilities.loadData();
 	}
@@ -107,10 +107,10 @@ public class VocabFrame extends JFrame implements WindowListener
 	}
 	
 	public void openNewGame(String acct, JPanel panel)
-	{
-		newGame.initInfo(acct, panel);
-		
+	{		
 		open(newGame);
+		
+		newGame.initInfo(acct, panel);
 	}
 	
 	public void openOptions()

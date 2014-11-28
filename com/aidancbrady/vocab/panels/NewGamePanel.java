@@ -43,7 +43,7 @@ public class NewGamePanel extends JPanel
 	public boolean reference;
 	
 	public GameType selectedType;
-	public String listIdentifier = "Default";
+	public String listIdentifier = null;
 	public Vector<String> displayedList = new Vector<String>();
 	public String opponent = "Guest";
 	
@@ -82,7 +82,7 @@ public class NewGamePanel extends JPanel
 		typeLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 110);
 		add(typeLabel);
 		
-		listLabel = new JLabel("Word list: " + listIdentifier);
+		listLabel = new JLabel("Word list: " + (listIdentifier != null ? listIdentifier : "none"));
 		listLabel.setVisible(true);
 		listLabel.setSize(200, 40);
 		listLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(listLabel)/2F), 370);
@@ -113,7 +113,7 @@ public class NewGamePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				loadList();
+				loadList(true);
 			}
 		});
 		add(loadButton);
@@ -138,7 +138,7 @@ public class NewGamePanel extends JPanel
 			{
 				if(event.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(event))
 				{
-					loadList();
+					loadList(true);
 				}
 			}
 		});
@@ -165,12 +165,18 @@ public class NewGamePanel extends JPanel
 			{
 				if(selectedType != null)
 				{
-					Game g = new Game(VocabCrack.instance().account.username, opponent, true);
-					g.setGameType(selectedType);
-					g.activeWords = WordDataHandler.createWordSet();
-					g.listIdentifier = listIdentifier;
-					
-					frame.openGame(g);
+					if(!VocabCrack.instance().loadedList.isEmpty())
+					{
+						Game g = new Game(VocabCrack.instance().account.username, opponent, true);
+						g.setGameType(selectedType);
+						g.activeWords = WordDataHandler.createWordSet();
+						g.listIdentifier = listIdentifier;
+						
+						frame.openGame(g);
+					}
+					else {
+						JOptionPane.showMessageDialog(NewGamePanel.this, "No word list loaded.");
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(NewGamePanel.this, "Please select a game type.");
@@ -260,8 +266,6 @@ public class NewGamePanel extends JPanel
 		copyright.setSize(200, 40);
 		copyright.setLocation(30, 520);
 		add(copyright);
-		
-		setVisible(true);
 	}
 	
 	public void updateInfo()
@@ -279,7 +283,7 @@ public class NewGamePanel extends JPanel
 		
 		typeLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 110);
 		
-		listLabel.setText("Word list: " + listIdentifier);
+		listLabel.setText("Word list: " + (listIdentifier != null ? listIdentifier : "none"));
 		listLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(listLabel)/2F), 370);
 		
 		wordListsList.setListData(displayedList);
@@ -289,6 +293,8 @@ public class NewGamePanel extends JPanel
 	{
 		opponent = acct;
 		reference = panel == frame.friends ? true : false;
+		
+		updateInfo();
 	}
 	
 	@Override
@@ -299,10 +305,11 @@ public class NewGamePanel extends JPanel
 		if(visible)
 		{
 			displayedList = WordListHandler.listIdentifiers();
+			loadList(false);
 		}
 		else {
 			selectedType = null;
-			listIdentifier = "Default";
+			listIdentifier = null;
 			displayedList.clear();
 			opponent = "Guest";
 		}
@@ -310,17 +317,24 @@ public class NewGamePanel extends JPanel
 		updateInfo();
 	}
 	
-	public void loadList()
+	public void loadList(boolean dialog)
 	{
 		if(!wordListsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
 			String id = displayedList.get(wordListsList.getSelectedIndex());
 			
-			if(!listIdentifier.equals(id) && WordListHandler.loadWordList(id, NewGamePanel.this))
+			if(listIdentifier == null || !listIdentifier.equals(id))
 			{
-				listIdentifier = id;
-				JOptionPane.showMessageDialog(NewGamePanel.this, "Loaded '" + id + "' word list");
-				updateInfo();
+				if(WordListHandler.loadWordList(id, NewGamePanel.this))
+				{
+					listIdentifier = id;
+					
+					if(dialog)
+					{
+						JOptionPane.showMessageDialog(NewGamePanel.this, "Loaded '" + id + "' word list");
+						updateInfo();
+					}
+				}
 			}
 		}
 	}
@@ -382,7 +396,7 @@ public class NewGamePanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					loadList();
+					loadList(true);
 				}
 			});
 			delete.addActionListener(new ActionListener() {
