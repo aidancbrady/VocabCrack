@@ -49,9 +49,9 @@ public class GameDetailsFrame extends JFrame
 		setAlwaysOnTop(true);
 		
 		namesLabel = new JLabel(game.user + " vs " + game.opponent);
-		namesLabel.setFont(new Font("Helvetica", Font.BOLD, 22));
+		namesLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
 		namesLabel.setVisible(true);
-		namesLabel.setSize(200, 40);
+		namesLabel.setSize(280, 40);
 		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 120);
 		add(namesLabel);
 		
@@ -134,8 +134,10 @@ public class GameDetailsFrame extends JFrame
 		scoreList.setListData(vec);
 	}
 	
-	public void open(String username)
+	public void open(Game g)
 	{
+		game = g;
+		
 		setAccountData();
 		
 		setVisible(true);
@@ -145,10 +147,10 @@ public class GameDetailsFrame extends JFrame
 	{		
 		avatar.repaint();
 		
-		namesLabel = new JLabel(game.user + " vs " + game.opponent);
+		namesLabel.setText(game.user + " vs " + game.opponent);
 		namesLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(namesLabel)/2F), 120);
 		
-		scoreLabel = new JLabel(game.getUserScore() + " - " + game.getOpponentScore());
+		scoreLabel.setText(game.getUserScore() + " - " + game.getOpponentScore());
 		scoreLabel.setLocation(140-(int)((float)Utilities.getLabelWidth(scoreLabel)/2F), 160);
 		
 		updateScoreList();
@@ -177,7 +179,7 @@ public class GameDetailsFrame extends JFrame
 			} catch(Exception e) {}
 			
 			try {
-				AvatarHandler.downloadAvatar(VocabCrack.instance().account).draw(g, 170, 26, 80, 80);
+				AvatarHandler.downloadAvatar(game.opponentEmail).draw(g, 170, 26, 80, 80);
 			} catch(Exception e) {}
 		}
 	}

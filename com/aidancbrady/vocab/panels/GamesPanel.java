@@ -420,7 +420,7 @@ public class GamesPanel extends JPanel
 			{
 				if(!g.isRequest)
 				{
-					frame.openGameDetails(g.opponent);
+					frame.openGameDetails(g);
 				}
 			}
 		}
@@ -528,7 +528,7 @@ public class GamesPanel extends JPanel
 				else {
 					String msg = value.isTied() ? "tied " : (value.getWinning().equals(value.user) ? "winning " : "losing ");
 					msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
-					setText(value.user + " - " + msg + " - " + (value.userTurn ? "your turn" : "opponent's turn"));
+					setText(value.opponent + " - " + msg + " - " + (value.userTurn ? "your turn" : "opponent's turn"));
 				}
 			}
 			else {

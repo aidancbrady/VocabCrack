@@ -143,7 +143,7 @@ public class VocabFrame extends JFrame implements WindowListener
 		userDetailsFrame.open(username);
 	}
 	
-	public void openGameDetails(String opponent)
+	public void openGameDetails(Game g)
 	{
 		if(gameDetailsFrame == null)
 		{
@@ -153,7 +153,7 @@ public class VocabFrame extends JFrame implements WindowListener
 			gameDetailsFrame.toFront();
 		}
 		
-		gameDetailsFrame.open(opponent);
+		gameDetailsFrame.open(g);
 	}
 	
 	public void openGame(Game g)

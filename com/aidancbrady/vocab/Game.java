@@ -58,11 +58,9 @@ public class Game
 	
 	public Game(String userName, String opponentName, boolean userReq)
 	{
+		this(userName, opponentName);
+		
 		activeRequested = userReq;
-		
-		user = activeRequested ? userName : opponentName;
-		opponent = activeRequested ? opponentName : userName;
-		
 		isRequest = true;
 	}
 	
