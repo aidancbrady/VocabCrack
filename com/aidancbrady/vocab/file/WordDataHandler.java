@@ -75,6 +75,8 @@ public class WordDataHandler
 				str.append(",");
 			}
 			
+			writer.write(str.toString());
+			
 			writer.flush();
 			writer.close();
 		} catch(Exception e) {
@@ -86,6 +88,12 @@ public class WordDataHandler
 	public static List<String> createWordSet()
 	{
 		List<String> list = new ArrayList<String>();
+		
+		if(VocabCrack.instance().loadedList.size()-VocabCrack.instance().learnedWords.size() < 10)
+		{
+			VocabCrack.instance().learnedWords.clear();
+			save();
+		}
 		
 		while(list.size() < 10)
 		{
