@@ -47,6 +47,11 @@ public final class Utilities
 		return new ImageIcon(img.getImage().getScaledInstance(width, height, Image.SCALE_FAST));
 	}
 	
+	public static String getRemoteUser(Game g)
+	{
+		return g.getOtherUser(VocabCrack.instance().account.username);
+	}
+	
 	public static boolean isValidCredential(String... creds)
 	{
 		for(String s : creds)

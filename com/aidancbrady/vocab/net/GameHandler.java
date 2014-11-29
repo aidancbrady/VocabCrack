@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.aidancbrady.vocab.Game;
+import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.GameFrame;
 import com.aidancbrady.vocab.panels.GamesPanel;
@@ -54,7 +55,7 @@ public class GameHandler
 				
 				for(int i = 1; i < response.length; i++)
 				{
-					Game g = Game.readDefault(VocabCrack.instance().account.username, response[i], ',');
+					Game g = Game.readDefault(response[i], ',');
 					g.opponentEmail = response[++i];
 					vec.add(g);
 				}
@@ -62,7 +63,7 @@ public class GameHandler
 				System.out.println(response1);
 				for(int i = 1; i < response1.length; i+=2)
 				{
-					Game g = Game.readRequest(VocabCrack.instance().account.username, response1[i], ',');
+					Game g = Game.readRequest(response1[i], ',');
 					g.opponentEmail = response1[i+1];
 					vec.add(g);
 				}
@@ -128,7 +129,7 @@ public class GameHandler
 				
 				for(int i = 1; i < response.length; i++)
 				{
-					Game g = Game.readDefault(VocabCrack.instance().account.username, response[i], ',');
+					Game g = Game.readDefault(response[i], ',');
 					g.opponentEmail = response[++i];
 					vec.add(g);
 				}
@@ -170,6 +171,7 @@ public class GameHandler
 	
 	public static void acceptRequest(String friend, GamesPanel panel)
 	{
+		System.out.println(friend);
 		panel.setLoading(true);
 		
 		Socket socket = new Socket();
@@ -195,7 +197,7 @@ public class GameHandler
 				for(Iterator<Game> iter = panel.displayedGames.iterator(); iter.hasNext();)
 				{
 					Game g = iter.next();
-					String opponent = g.isRequest ? g.getRequestOpponent() : g.opponent;
+					String opponent = Utilities.getRemoteUser(g);
 					
 					if(opponent.equals(friend))
 					{
@@ -267,7 +269,7 @@ public class GameHandler
 					for(Iterator<Game> iter = panel.displayedGames.iterator(); iter.hasNext();)
 					{
 						Game g = iter.next();
-						String opponent = g.isRequest ? g.getRequestOpponent() : g.opponent;
+						String opponent = Utilities.getRemoteUser(g);
 						
 						if(opponent.equals(friend))
 						{
@@ -374,7 +376,7 @@ public class GameHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			StringBuilder str = new StringBuilder(VocabCrack.instance().account.username + ":" + frame.game.getRequestOpponent());
+			StringBuilder str = new StringBuilder(VocabCrack.instance().account.username + ":" + frame.game.getRequestReceiver());
 			str.append(":" + frame.game.gameType + ":" + frame.game.userPoints.get(frame.game.userPoints.size()-1));
 			str.append(":" + frame.game.listIdentifier + ":");
 			frame.game.writeWordList(str);

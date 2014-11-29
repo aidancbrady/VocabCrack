@@ -75,7 +75,7 @@ public class GameFrame extends JFrame implements WindowListener
 	{
 		frame = f;
 		
-		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
+		setTitle("Game with " + Utilities.getRemoteUser(game));
 		setSize(512, 580);
 		setLayout(null);
 		addWindowListener(this);
@@ -119,7 +119,7 @@ public class GameFrame extends JFrame implements WindowListener
 		userLabel.setLocation(16, 16);
 		add(userLabel);
 		
-		opponentLabel = new JLabel((game.isRequest ? game.getRequestOpponent() : game.opponent) + ": " + game.getOpponentScore());
+		opponentLabel = new JLabel(Utilities.getRemoteUser(game) + ": " + game.getOpponentScore());
 		opponentLabel.setFont(new Font("Helvetica", Font.BOLD, 14));
 		opponentLabel.setVisible(true);
 		opponentLabel.setSize(200, 40);
@@ -184,7 +184,7 @@ public class GameFrame extends JFrame implements WindowListener
 	{
 		userLabel.setText(VocabCrack.instance().account.username + ": " + game.getUserScore());
 		
-		opponentLabel.setText((game.isRequest ? game.getRequestOpponent() : game.opponent) + ": " + game.getOpponentScore());
+		opponentLabel.setText(Utilities.getRemoteUser(game) + ": " + game.getOpponentScore());
 		opponentLabel.setLocation(496-Utilities.getLabelWidth(opponentLabel), 16);
 	
 		typeLabel.setText(GameType.values()[game.gameType].getDescription());
@@ -275,7 +275,13 @@ public class GameFrame extends JFrame implements WindowListener
 				
 				getContentPane().setBackground(Color.LIGHT_GRAY);
 				
-				GameHandler.newGame(this);
+				if(game.isRequest)
+				{
+					GameHandler.newGame(this);
+				}
+				else {
+					
+				}
 			}
 		}
 	}
@@ -413,7 +419,7 @@ public class GameFrame extends JFrame implements WindowListener
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
-		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
+		setTitle("Game with " + Utilities.getRemoteUser(game));
 		
 		if(timer != null)
 		{
@@ -432,7 +438,7 @@ public class GameFrame extends JFrame implements WindowListener
 	{
 		game = g;
 		
-		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
+		setTitle("Game with " + Utilities.getRemoteUser(game));
 		
 		setVisible(true);
 		

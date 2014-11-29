@@ -100,7 +100,8 @@ public class GamesPanel extends JPanel
 						{
 							Game g = displayedList.get(gamesList.getSelectedIndex());
 							
-							if(g.isRequest && g.getRequestOpponent().equals(VocabCrack.instance().account.username))
+							System.out.println(g.isRequest + " " + Utilities.getRemoteUser(g) + " " + VocabCrack.instance().account.username + " " + g.activeRequested);
+							if(g.isRequest && g.getRequestReceiver().equals(VocabCrack.instance().account.username))
 							{
 								accept();
 							}
@@ -378,7 +379,7 @@ public class GamesPanel extends JPanel
 					{
 						for(Game g : displayedGames)
 						{
-							String opponent = g.isRequest ? g.getRequestOpponent() : g.opponent;
+							String opponent = Utilities.getRemoteUser(g);
 							
 							if(opponent.toLowerCase().contains(query))
 							{
@@ -471,17 +472,17 @@ public class GamesPanel extends JPanel
 			
 			String msg = type == 0 ? "Are you sure you want to resign from your game with " + g.opponent + "?" : 
 				(type == 1 ? "Are you sure you want to remove your past game with " + g.opponent + "?" : 
-					(type == 2 ? "Are you sure you want to cancel your request to " + g.getRequestOpponent() + "?" : 
-						"Are you sure you want to ignore " + g.getRequesterName() + "'s game request?"));
+					(type == 2 ? "Are you sure you want to cancel your request to " + g.getRequestReceiver() + "?" : 
+						"Are you sure you want to ignore " + g.getRequester() + "'s game request?"));
 			
 			if(JOptionPane.showConfirmDialog(GamesPanel.this, msg, "Confirm Deletion", JOptionPane.YES_NO_OPTION) == 0)
 			{
 				if(type == 1)
 				{
-					GameHandler.deleteGame(!g.isRequest ? g.opponent : g.getRequestOpponent(), type, GamesPanel.this, displayedPast.indexOf(g));
+					GameHandler.deleteGame(Utilities.getRemoteUser(g), type, GamesPanel.this, displayedPast.indexOf(g));
 				}
 				else {
-					GameHandler.deleteGame(!g.isRequest ? g.opponent : g.getRequestOpponent(), type, GamesPanel.this);
+					GameHandler.deleteGame(Utilities.getRemoteUser(g), type, GamesPanel.this);
 				}
 			}
 		}
@@ -495,9 +496,9 @@ public class GamesPanel extends JPanel
 			
 			if(mode && g.isRequest && !g.activeRequested)
 			{
-				if(JOptionPane.showConfirmDialog(GamesPanel.this, "Accept request from " + g.getRequesterName() + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
+				if(JOptionPane.showConfirmDialog(GamesPanel.this, "Accept request from " + g.getRequester() + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
 				{
-					GameHandler.acceptRequest(g.getRequesterName(), GamesPanel.this);
+					GameHandler.acceptRequest(g.getRequester(), GamesPanel.this);
 				}
 			}
 		}
@@ -522,7 +523,7 @@ public class GamesPanel extends JPanel
 			{
 				if(value.isRequest)
 				{
-					setText(value.getRequestOpponent() + " - 0 to 0 - awaiting approval");
+					setText(Utilities.getRemoteUser(value) + " - 0 to 0 - awaiting approval");
 				}
 				else {
 					String msg = value.isTied() ? "tied " : (value.getWinning().equals(value.user) ? "winning " : "losing ");
