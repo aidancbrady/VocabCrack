@@ -9,10 +9,9 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import jgravatar.Gravatar;
-
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
+import com.timgroup.jgravatar.Gravatar;
 
 public class AvatarHandler 
 {
