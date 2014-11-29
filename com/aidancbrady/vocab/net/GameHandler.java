@@ -59,10 +59,11 @@ public class GameHandler
 					vec.add(g);
 				}
 				
-				for(int i = 1; i < response1.length; i++)
+				System.out.println(response1);
+				for(int i = 1; i < response1.length; i+=2)
 				{
 					Game g = Game.readRequest(VocabCrack.instance().account.username, response1[i], ',');
-					g.opponentEmail = response1[++i];
+					g.opponentEmail = response1[i+1];
 					vec.add(g);
 				}
 				
@@ -93,6 +94,7 @@ public class GameHandler
 		} catch(Exception e) {
 			panel.setLoading(false);
 			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
 			
 			try {
 				socket.close();
@@ -158,6 +160,7 @@ public class GameHandler
 		} catch(Exception e) {
 			panel.setLoading(false);
 			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
 			
 			try {
 				socket.close();
@@ -229,6 +232,7 @@ public class GameHandler
 		} catch(Exception e) {
 			panel.setLoading(false);
 			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
 			
 			try {
 				socket.close();
@@ -350,6 +354,7 @@ public class GameHandler
 			}
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(panel, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
 			
 			try {
 				socket.close();
@@ -402,6 +407,7 @@ public class GameHandler
 			}
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(frame, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
 			
 			try {
 				socket.close();

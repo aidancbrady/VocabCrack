@@ -438,6 +438,14 @@ public class FriendHandler
 				
 				panel.resetList();
 				
+				if(panel.displayedRequests.size() > 0)
+				{
+					panel.requestsButton.setText("Requests (" + panel.displayedRequests.size() + ")");
+				}
+				else {
+					panel.requestsButton.setText("Requests");
+				}
+				
 				JOptionPane.showMessageDialog(panel, "You are now friends with " + friend + "!");
 				
 				return;

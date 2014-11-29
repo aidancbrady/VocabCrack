@@ -96,10 +96,22 @@ public class GamesPanel extends JPanel
 				{
 					if(mode)
 					{
-						openDetails();
+						if(!gamesList.isSelectionEmpty() && !displayedList.isEmpty())
+						{
+							Game g = displayedList.get(gamesList.getSelectedIndex());
+							
+							if(g.isRequest && g.getRequestOpponent().equals(VocabCrack.instance().account.username))
+							{
+								accept();
+							}
+							else if(!g.isRequest)
+							{
+								openDetails();
+							}
+						}
 					}
 					else {
-						accept();
+						newGame();
 					}
 				}
 			}

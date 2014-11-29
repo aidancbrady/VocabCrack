@@ -263,6 +263,8 @@ public class GameFrame extends JFrame implements WindowListener
 				getContentPane().setBackground(Color.LIGHT_GRAY);
 			}
 			else {
+				game.userPoints.add(amountCorrect);
+				
 				answerLabel.setText("Your score: " + amountCorrect + "/10");
 				answerLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(answerLabel)/2F), 180);
 				answerLabel.setVisible(true);
@@ -270,6 +272,8 @@ public class GameFrame extends JFrame implements WindowListener
 				statusLabel.setText("Press spacebar to exit");
 				statusLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(statusLabel)/2F), 240);
 				statusLabel.setVisible(true);
+				
+				getContentPane().setBackground(Color.LIGHT_GRAY);
 				
 				GameHandler.newGame(this);
 			}
@@ -317,9 +321,7 @@ public class GameFrame extends JFrame implements WindowListener
 			updateGame();
 		}
 		else if(wordIndex == 10 && activeWord)
-		{
-			game.userPoints.add(amountCorrect);
-			
+		{			
 			if(game.hasWinner())
 			{
 				String score = null;
@@ -405,13 +407,13 @@ public class GameFrame extends JFrame implements WindowListener
 		wordIndex = -1;
 		activeWord = false;
 		complete = false;
+		correct = false;
 		amountCorrect = 0;
 		time = 30;
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		setTitle("Game with " + (game.isRequest ? game.getRequestOpponent() : game.opponent));
-		frame.openGames();
 		
 		if(timer != null)
 		{
@@ -423,6 +425,7 @@ public class GameFrame extends JFrame implements WindowListener
 		updateGame();
 		
 		setVisible(false);
+		frame.openGames();
 	}
 	
 	public void initGame(Game g)
