@@ -333,6 +333,7 @@ public class GamesPanel extends JPanel
 		}
 		
 		gamesList.setListData(displayedList);
+		gamesList.repaint();
 	}
 	
 	@Override

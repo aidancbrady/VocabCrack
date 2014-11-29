@@ -48,20 +48,6 @@ public class GameHandler
 			{
 				String[] response1 = reader.readLine().trim().split(":");
 				
-				for(String s : response)
-				{
-					System.out.print(s + ":");
-				}
-				
-				System.out.println();
-				
-				for(String s : response1)
-				{
-					System.out.print(s + ":");
-				}
-				
-				System.out.println();
-				
 				socket.close();
 				panel.setLoading(false);
 				

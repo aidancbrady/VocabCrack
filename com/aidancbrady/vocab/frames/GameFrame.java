@@ -381,6 +381,7 @@ public class GameFrame extends JFrame implements WindowListener
 		wordIndex++;
 		time = 30;
 		timerLabel.setText("Timer: 30s");
+		timerLabel.setLocation(496-Utilities.getLabelWidth(timerLabel), 512);
 		
 		if(correct)
 		{
