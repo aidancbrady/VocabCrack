@@ -499,8 +499,9 @@ public class FriendHandler
 				int won = Integer.parseInt(response[2]);
 				int lost = Integer.parseInt(response[3]);
 				
-				Account acct = new Account(friend, response[1], "password").setGamesWon(won).setGamesLost(lost);
-				frame.acct = acct;
+				frame.acct = new Account(friend, response[1], "password").setGamesWon(won).setGamesLost(lost);
+				
+				frame.setAccountData();
 				
 				return;
 			}

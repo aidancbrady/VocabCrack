@@ -100,7 +100,6 @@ public class GamesPanel extends JPanel
 						{
 							Game g = displayedList.get(gamesList.getSelectedIndex());
 							
-							System.out.println(g.isRequest + " " + Utilities.getRemoteUser(g) + " " + VocabCrack.instance().account.username + " " + g.activeRequested + " " + g.user + " " + g.opponent + " " + g.userTurn);
 							if(g.isRequest && g.getRequestReceiver().equals(VocabCrack.instance().account.username))
 							{
 								accept();

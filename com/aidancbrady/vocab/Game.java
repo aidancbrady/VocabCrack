@@ -72,7 +72,7 @@ public class Game
 		g.gameType = gameType;
 		g.listIdentifier = listIdentifier;
 		g.activeWords = activeWords;
-		g.userTurn = !g.userTurn;
+		g.userTurn = !userTurn;
 		g.userPoints = userPoints;
 		
 		return g;
@@ -136,9 +136,7 @@ public class Game
 		g.listIdentifier = split[4].trim();
 		
 		int index = g.readScoreList(split, 5, true);
-		System.out.println(index);
 		index = g.readScoreList(split, index, false);
-		System.out.println(index + " " + split.length);
 		
 		g.readWordList(split[index]);
 		
@@ -225,8 +223,6 @@ public class Game
 		
 		int size = Integer.parseInt(array[start]);
 		int maxIndex = size+start;
-		
-		System.out.println(maxIndex + " " + user + " " + size + " " + start);
 		
 		for(int i = 0; i < size; i++)
 		{

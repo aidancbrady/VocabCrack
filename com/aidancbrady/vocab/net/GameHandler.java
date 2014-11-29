@@ -222,7 +222,7 @@ public class GameHandler
 				panel.displayedGames.add(found.convertToActive(VocabCrack.instance().account.username));
 				panel.resetList();
 				
-				JOptionPane.showMessageDialog(panel, "You are now friends with " + friend + "!");
+				JOptionPane.showMessageDialog(panel, "Successfully accepted " + friend + "'s game!");
 				
 				return;
 			}
@@ -266,7 +266,7 @@ public class GameHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("DELFRIEND:" + VocabCrack.instance().account.username + ":" + friend + ":" + type + (type == 1 ? index[0] : ""));
+			writer.println("DELGAME:" + VocabCrack.instance().account.username + ":" + friend + ":" + type + (type == 1 ? index[0] : ""));
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");
