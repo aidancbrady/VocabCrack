@@ -100,7 +100,7 @@ public class GamesPanel extends JPanel
 						{
 							Game g = displayedList.get(gamesList.getSelectedIndex());
 							
-							System.out.println(g.isRequest + " " + Utilities.getRemoteUser(g) + " " + VocabCrack.instance().account.username + " " + g.activeRequested);
+							System.out.println(g.isRequest + " " + Utilities.getRemoteUser(g) + " " + VocabCrack.instance().account.username + " " + g.activeRequested + " " + g.user + " " + g.opponent + " " + g.userTurn);
 							if(g.isRequest && g.getRequestReceiver().equals(VocabCrack.instance().account.username))
 							{
 								accept();
@@ -534,7 +534,7 @@ public class GamesPanel extends JPanel
 			else {
 				String msg = value.getWinning().equals(value.user) ? "won " : "lost ";
 				msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
-				setText(value.user + " - " + msg);
+				setText(value.opponent + " - " + msg);
 			}
 			
 			try {

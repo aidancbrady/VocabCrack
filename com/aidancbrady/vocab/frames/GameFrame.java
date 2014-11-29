@@ -263,6 +263,8 @@ public class GameFrame extends JFrame implements WindowListener
 				getContentPane().setBackground(Color.LIGHT_GRAY);
 			}
 			else {
+				wordLabel.setVisible(false);
+				
 				game.userPoints.add(amountCorrect);
 				
 				answerLabel.setText("Your score: " + amountCorrect + "/10");

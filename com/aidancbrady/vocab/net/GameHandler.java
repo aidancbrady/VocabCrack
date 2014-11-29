@@ -48,19 +48,32 @@ public class GameHandler
 			{
 				String[] response1 = reader.readLine().trim().split(":");
 				
+				for(String s : response)
+				{
+					System.out.print(s + ":");
+				}
+				
+				System.out.println();
+				
+				for(String s : response1)
+				{
+					System.out.print(s + ":");
+				}
+				
+				System.out.println();
+				
 				socket.close();
 				panel.setLoading(false);
 				
 				Vector<Game> vec = new Vector<Game>();
 				
-				for(int i = 1; i < response.length; i++)
+				for(int i = 1; i < response.length; i+=2)
 				{
 					Game g = Game.readDefault(response[i], ',');
-					g.opponentEmail = response[++i];
+					g.opponentEmail = response[i+1];
 					vec.add(g);
 				}
 				
-				System.out.println(response1);
 				for(int i = 1; i < response1.length; i+=2)
 				{
 					Game g = Game.readRequest(response1[i], ',');
@@ -171,7 +184,6 @@ public class GameHandler
 	
 	public static void acceptRequest(String friend, GamesPanel panel)
 	{
-		System.out.println(friend);
 		panel.setLoading(true);
 		
 		Socket socket = new Socket();
@@ -207,7 +219,7 @@ public class GameHandler
 					}
 				}
 				
-				panel.displayedGames.add(found.convertToActive());
+				panel.displayedGames.add(found.convertToActive(VocabCrack.instance().account.username));
 				panel.resetList();
 				
 				JOptionPane.showMessageDialog(panel, "You are now friends with " + friend + "!");
