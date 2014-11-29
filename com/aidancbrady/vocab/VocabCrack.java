@@ -1,8 +1,10 @@
 package com.aidancbrady.vocab;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
@@ -23,6 +25,8 @@ public class VocabCrack
 	public List<String> loadedList = new ArrayList<String>();
 	
 	public Set<String> learnedWords = new HashSet<String>();
+	
+	public Map<String, String> listURLs = new HashMap<String, String>();
 	
 	public Account account = Account.DEFAULT;
 	

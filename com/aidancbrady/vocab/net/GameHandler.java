@@ -376,7 +376,7 @@ public class GameHandler
 			
 			StringBuilder str = new StringBuilder(VocabCrack.instance().account.username + ":" + frame.game.getRequestReceiver());
 			str.append(":" + frame.game.gameType + ":" + frame.game.userPoints.get(frame.game.userPoints.size()-1));
-			str.append(":" + frame.game.listIdentifier + ":");
+			str.append(":" + frame.game.listURL + ":");
 			frame.game.writeWordList(str);
 			
 			writer.println("NEWGAME:" + str);

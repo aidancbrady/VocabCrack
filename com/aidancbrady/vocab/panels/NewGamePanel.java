@@ -26,7 +26,6 @@ import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Game.GameType;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.file.WordDataHandler;
 import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.frames.VocabFrame;
 import com.aidancbrady.vocab.tex.Texture;
@@ -43,12 +42,12 @@ public class NewGamePanel extends JPanel
 	public boolean reference;
 	
 	public GameType selectedType;
-	public String listIdentifier = null;
+	public String listName = null;
 	public Vector<String> displayedList = new Vector<String>();
 	public String opponent = "Guest";
 	
 	public JButton loadButton;
-	public JButton refreshButton;
+	public JButton newButton;
 	public JButton continueButton;
 	public JButton backButton;
 	
@@ -82,7 +81,7 @@ public class NewGamePanel extends JPanel
 		typeLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 110);
 		add(typeLabel);
 		
-		listLabel = new JLabel("Word list: " + (listIdentifier != null ? listIdentifier : "none"));
+		listLabel = new JLabel("Word list: " + (listName != null ? listName : "none"));
 		listLabel.setVisible(true);
 		listLabel.setSize(200, 40);
 		listLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(listLabel)/2F), 370);
@@ -118,17 +117,57 @@ public class NewGamePanel extends JPanel
 		});
 		add(loadButton);
 		
-		refreshButton = new JButton("Refresh");
-		refreshButton.setSize(110, 30);
-		refreshButton.setLocation(197, 340);
-		refreshButton.addActionListener(new ActionListener() {
+		newButton = new JButton("New");
+		newButton.setSize(110, 30);
+		newButton.setLocation(197, 340);
+		newButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				refreshList();
+				String name = JOptionPane.showInputDialog(NewGamePanel.this, "Enter a name for the word list.");
+				
+				if(name != null)
+				{
+					name = name.trim();
+					
+					if(VocabCrack.instance().listURLs.containsKey(name))
+					{
+						JOptionPane.showMessageDialog(NewGamePanel.this, "A word list of that name already exists.");
+						return;
+					}
+					
+					if(name.contains(":"))
+					{
+						JOptionPane.showMessageDialog(NewGamePanel.this, "Invalid characters.");
+						return;
+					}
+					
+					String url = JOptionPane.showInputDialog(NewGamePanel.this, "Enter the word list's URL.");
+					
+					if(url != null)
+					{
+						url = url.trim();
+						
+						if(VocabCrack.instance().listURLs.containsValue(url))
+						{
+							JOptionPane.showMessageDialog(NewGamePanel.this, "A word list with that URL already exists.");
+							return;
+						}
+						
+						if(url.contains("|"))
+						{
+							JOptionPane.showMessageDialog(NewGamePanel.this, "Invalid characters.");
+							return;
+						}
+						
+						WordListHandler.addList(name, url);
+						refreshList();
+						JOptionPane.showMessageDialog(NewGamePanel.this, "Successfully created word list reference!");
+					}
+				}
 			}
 		});
-		add(refreshButton);
+		add(newButton);
 		
 		wordListsList = new JList<String>();
 		wordListsList.addMouseListener(new MouseAdapter()
@@ -167,11 +206,19 @@ public class NewGamePanel extends JPanel
 				{
 					if(!VocabCrack.instance().loadedList.isEmpty())
 					{
-						Game g = new Game(VocabCrack.instance().account.username, opponent, true);
-						g.setGameType(selectedType);
-						g.listIdentifier = listIdentifier;
+						String url = WordListHandler.getURL(listName);
 						
-						frame.openGame(g);
+						if(url != null)
+						{
+							Game g = new Game(VocabCrack.instance().account.username, opponent, true);
+							g.setGameType(selectedType);
+							g.listURL = WordListHandler.convertURL(url, false);
+							
+							frame.openGame(g);
+						}
+						else {
+							JOptionPane.showMessageDialog(NewGamePanel.this, "Couldn't find matching word list URL.");
+						}
 					}
 					else {
 						JOptionPane.showMessageDialog(NewGamePanel.this, "No word list loaded.");
@@ -282,7 +329,7 @@ public class NewGamePanel extends JPanel
 		
 		typeLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(typeLabel)/2F), 110);
 		
-		listLabel.setText("Word list: " + (listIdentifier != null ? listIdentifier : "none"));
+		listLabel.setText("Word list: " + (listName != null ? listName : "none"));
 		listLabel.setLocation(200-(int)((float)Utilities.getLabelWidth(listLabel)/2F), 370);
 		
 		wordListsList.setListData(displayedList);
@@ -303,12 +350,12 @@ public class NewGamePanel extends JPanel
 		
 		if(visible)
 		{
-			displayedList = WordListHandler.listIdentifiers();
+			displayedList = WordListHandler.listNames();
 			loadList(false);
 		}
 		else {
 			selectedType = null;
-			listIdentifier = null;
+			listName = null;
 			displayedList.clear();
 			opponent = "Guest";
 			
@@ -324,17 +371,17 @@ public class NewGamePanel extends JPanel
 	{
 		if(!wordListsList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String id = displayedList.get(wordListsList.getSelectedIndex());
+			String name = displayedList.get(wordListsList.getSelectedIndex());
 			
-			if(listIdentifier == null || !listIdentifier.equals(id))
+			if(listName == null || !listName.equals(name))
 			{
-				if(WordListHandler.loadWordList(id, NewGamePanel.this))
+				if(WordListHandler.loadList(WordListHandler.getURL(name), NewGamePanel.this))
 				{
-					listIdentifier = id;
+					listName = name;
 					
 					if(dialog)
 					{
-						JOptionPane.showMessageDialog(NewGamePanel.this, "Loaded '" + id + "' word list");
+						JOptionPane.showMessageDialog(NewGamePanel.this, "Loaded '" + name + "' word list");
 						updateInfo();
 					}
 				}
@@ -382,7 +429,7 @@ public class NewGamePanel extends JPanel
 	
 	public void refreshList()
 	{
-		displayedList = WordListHandler.listIdentifiers();
+		displayedList = WordListHandler.listNames();
 		updateInfo();
 	}
 	
@@ -410,7 +457,7 @@ public class NewGamePanel extends JPanel
 					{
 						String id = displayedList.get(wordListsList.getSelectedIndex());
 						
-						if(id.equals(listIdentifier))
+						if(id.equals(listName))
 						{
 							JOptionPane.showMessageDialog(NewGamePanel.this, "Can't delete the loaded word list, load another first.");
 							return;
