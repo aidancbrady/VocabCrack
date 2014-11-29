@@ -27,7 +27,7 @@ public class WordListHandler
 			
 			if(!defFile.exists())
 			{
-				InputStream stream = WordListHandler.class.getClassLoader().getResourceAsStream("resources" + File.separator + "Default.txt");
+				InputStream stream = WordListHandler.class.getClassLoader().getResourceAsStream("resources" + File.separator + "external" + File.separator + "Default.txt");
 				FileOutputStream output = new FileOutputStream(defFile);
 				
 				byte[] buffer = new byte[2048];

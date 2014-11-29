@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +34,7 @@ public class GameFrame extends JFrame implements WindowListener
 	
 	private static Random rand = new Random();
 	
-	private static final Texture wordTexture = Texture.load("word.png");
+	private static final Texture wordTexture = Texture.load("resources" + File.separator + "texture" + File.separator + "word.png");
 	
 	public TimerThread timer;
 	
@@ -576,7 +577,7 @@ public class GameFrame extends JFrame implements WindowListener
 		public int index;
 		
 		public Texture texture;
-		public Texture highlight = Texture.load("highlight.png");
+		public Texture highlight = Texture.load("resources" + File.separator + "texture" + File.separator + "highlight.png");
 		
 		public String text;
 		
@@ -586,7 +587,7 @@ public class GameFrame extends JFrame implements WindowListener
 		public DefComponent(int i)
 		{
 			index = i;
-			texture = Texture.load("def" + i + ".png");
+			texture = Texture.load("resources" + File.separator + "texture" + File.separator + "def" + i + ".png");
 			
 			addMouseListener(this);
 			setVisible(false);
