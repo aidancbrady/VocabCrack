@@ -24,6 +24,7 @@ import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.file.WordDataHandler;
 import com.aidancbrady.vocab.file.WordListHandler;
+import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
 public class GameFrame extends JFrame implements WindowListener
@@ -269,6 +270,8 @@ public class GameFrame extends JFrame implements WindowListener
 				statusLabel.setText("Press spacebar to exit");
 				statusLabel.setLocation(256-(int)((float)Utilities.getLabelWidth(statusLabel)/2F), 240);
 				statusLabel.setVisible(true);
+				
+				GameHandler.newGame(this);
 			}
 		}
 	}

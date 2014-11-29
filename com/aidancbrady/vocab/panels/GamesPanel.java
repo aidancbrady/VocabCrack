@@ -417,11 +417,17 @@ public class GamesPanel extends JPanel
 	{
 		if(!gamesList.isSelectionEmpty() && !displayedList.isEmpty())
 		{
-			String name = displayedList.get(gamesList.getSelectedIndex()).opponent;
+			Game g = displayedList.get(gamesList.getSelectedIndex());
 			
 			if(mode)
 			{
-				//Play
+				if(g.userTurn)
+				{
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "It is not your turn!");
+				}
 			}
 		}
 	}
@@ -509,7 +515,7 @@ public class GamesPanel extends JPanel
 				else {
 					String msg = value.isTied() ? "tied " : (value.getWinning().equals(value.user) ? "winning " : "losing ");
 					msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
-					setText(value.user + " - " + msg + " - " + (value.userTurn ? "your turn!" : "opponent's turn"));
+					setText(value.user + " - " + msg + " - " + (value.userTurn ? "your turn" : "opponent's turn"));
 				}
 			}
 			else {
