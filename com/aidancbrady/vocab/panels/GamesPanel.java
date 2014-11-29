@@ -27,6 +27,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import com.aidancbrady.vocab.Game;
+import com.aidancbrady.vocab.Game.GameType;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.frames.VocabFrame;
@@ -220,7 +221,7 @@ public class GamesPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				newGame();
+				play();
 			}
 		});
 		add(playButton);
@@ -436,7 +437,7 @@ public class GamesPanel extends JPanel
 			{
 				if(g.userTurn)
 				{
-					
+					frame.openGame(g);
 				}
 				else {
 					JOptionPane.showMessageDialog(this, "It is not your turn!");
@@ -523,18 +524,27 @@ public class GamesPanel extends JPanel
 			{
 				if(value.isRequest)
 				{
-					setText(Utilities.getRemoteUser(value) + " - 0 to 0 - awaiting approval");
+					setText(Utilities.getRemoteUser(value) + " - " + GameType.values()[value.gameType].getDescription().toLowerCase() + " - tied 0 to 0 - awaiting approval");
 				}
 				else {
 					String msg = value.isTied() ? "tied " : (value.getWinning().equals(value.user) ? "winning " : "losing ");
 					msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
-					setText(value.opponent + " - " + msg + " - " + (value.userTurn ? "your turn" : "opponent's turn"));
+					setText(value.opponent + " - " + GameType.values()[value.gameType].getDescription().toLowerCase() + " - " + msg + " - " + (value.userTurn ? "your turn" : "opponent's turn"));
 				}
 			}
 			else {
-				String msg = value.getWinning().equals(value.user) ? "won " : "lost ";
-				msg.concat(value.getUserScore() + " to " + value.getOpponentScore());
-				setText(value.opponent + " - " + msg);
+				String msg = null;
+				
+				if(value.getWinner() == null)
+				{
+					msg = "tied ";
+				}
+				else {
+					msg = value.getWinner().equals(value.user) ? "won " : "lost ";
+				}
+				
+				msg += value.getUserScore() + " to " + value.getOpponentScore();
+				setText(value.opponent + " - " + GameType.values()[value.gameType].getDescription().toLowerCase() + " - " + msg);
 			}
 			
 			try {

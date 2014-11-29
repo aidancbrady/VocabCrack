@@ -414,4 +414,60 @@ public class GameHandler
 			} catch(Exception e1) {}
 		}
 	}
+	
+	public static void compGame(GameFrame frame)
+	{
+		Socket socket = new Socket();
+		
+		try {
+			socket.connect(new InetSocketAddress(VocabCrack.serverIP, VocabCrack.serverPort), 5000);
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+			
+			StringBuilder str = new StringBuilder(VocabCrack.instance().account.username + ":" + frame.game.getRequestReceiver());
+			str.append(":" + frame.game.userPoints.get(frame.game.userPoints.size()-1) + ":");
+			
+			if(frame.game.userPoints.size() != frame.game.opponentPoints.size())
+			{
+				frame.game.writeWordList(str);
+			}
+			
+			frame.game.writeWordList(str);
+			
+			writer.println("COMPGAME:" + str);
+			writer.flush();
+			
+			String[] response = reader.readLine().trim().split(":");
+			
+			if(response[0].equals("ACCEPT"))
+			{
+				socket.close();
+				
+				return;
+			}
+			else if(response[0].equals("REJECT"))
+			{
+				socket.close();
+				
+				JOptionPane.showMessageDialog(frame, "Couldn't process request: " + response[1]);
+				
+				return;
+			}
+			else {
+				socket.close();
+				
+				JOptionPane.showMessageDialog(frame, "Unable to parse response");
+				
+				return;
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(frame, "Couldn't connect to server: " + e.getLocalizedMessage());
+			e.printStackTrace();
+			
+			try {
+				socket.close();
+			} catch(Exception e1) {}
+		}
+	}
 }

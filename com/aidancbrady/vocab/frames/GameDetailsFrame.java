@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -19,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
 import com.aidancbrady.vocab.VocabCrack;
+import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
 public class GameDetailsFrame extends JFrame
@@ -81,7 +83,22 @@ public class GameDetailsFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-
+				if(game.userTurn)
+				{
+					if(WordListHandler.loadWordList("Default", GameDetailsFrame.this))
+					{
+						frame.openGame(game);
+						setVisible(false);
+						
+						System.out.println(game.isRequest);
+					}
+					else {
+						JOptionPane.showMessageDialog(GameDetailsFrame.this, "Unable to download word list.");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(GameDetailsFrame.this, "It is not your turn!");
+				}
 			}
 		});
 		add(playButton);

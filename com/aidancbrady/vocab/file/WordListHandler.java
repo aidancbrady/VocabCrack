@@ -1,5 +1,6 @@
 package com.aidancbrady.vocab.file;
 
+import java.awt.Container;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,7 +11,6 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.panels.NewGamePanel;
 
 public class WordListHandler 
 {
@@ -45,7 +45,7 @@ public class WordListHandler
 		} catch(Exception e) {}
 	}
 	
-	public static boolean loadWordList(String identifier, NewGamePanel panel)
+	public static boolean loadWordList(String identifier, Container panel)
 	{
 		System.out.println("Loading word list '" + identifier + "'");
 		

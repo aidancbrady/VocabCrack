@@ -82,6 +82,7 @@ public class GameFrame extends JFrame implements WindowListener
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
+		setResizable(false);
 		addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {}
@@ -283,7 +284,7 @@ public class GameFrame extends JFrame implements WindowListener
 					GameHandler.newGame(this);
 				}
 				else {
-					
+					GameHandler.compGame(this);
 				}
 			}
 		}
@@ -338,10 +339,22 @@ public class GameFrame extends JFrame implements WindowListener
 				if(game.getWinner().equals(game.user))
 				{
 					score = game.getUserScore() + " to " + game.getOpponentScore();
+					
+					if(game.gameType == GameType.SINGLE.ordinal())
+					{
+						score = game.userPoints.get(0) + " to " + game.opponentPoints.get(0);
+					}
+					
 					JOptionPane.showMessageDialog(this, "You beat " + game.opponent + " " + score + "!");
 				}
 				else {
 					score = game.getOpponentScore() + " to " + game.getUserScore();
+					
+					if(game.gameType == GameType.SINGLE.ordinal())
+					{
+						score = game.opponentPoints.get(0) + " to " + game.userPoints.get(0);
+					}
+					
 					JOptionPane.showMessageDialog(this, game.opponent + " beat you " + score + "!");
 				}
 			}
@@ -443,6 +456,14 @@ public class GameFrame extends JFrame implements WindowListener
 		game = g;
 		
 		setTitle("Game with " + Utilities.getRemoteUser(game));
+		
+		if(game.userPoints.size() == game.opponentPoints.size())
+		{
+			game.activeWords = WordDataHandler.createWordSet();
+		}
+		else {
+			System.out.println(game.activeWords + " " + wordIndex);
+		}
 		
 		setVisible(true);
 		
@@ -649,9 +670,12 @@ public class GameFrame extends JFrame implements WindowListener
 			
 			texture.draw(g, 4, 4, getWidth()-8, getHeight()-8);
 			
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Helvetica", Font.BOLD, 14));
-			g.drawString(text, 12, 32);
+			if(text != null)
+			{
+				g.setColor(Color.WHITE);
+				g.setFont(new Font("Helvetica", Font.BOLD, 14));
+				g.drawString(text, 12, 32);
+			}
 		}
 	}
 	
