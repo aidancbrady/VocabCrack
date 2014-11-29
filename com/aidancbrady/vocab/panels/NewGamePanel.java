@@ -212,7 +212,7 @@ public class NewGamePanel extends JPanel
 						{
 							Game g = new Game(VocabCrack.instance().account.username, opponent, true);
 							g.setGameType(selectedType);
-							g.listURL = WordListHandler.convertURL(url, false);
+							g.setList(listName, WordListHandler.convertURL(url, false));
 							
 							frame.openGame(g);
 						}

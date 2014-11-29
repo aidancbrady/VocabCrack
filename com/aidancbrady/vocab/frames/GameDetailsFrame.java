@@ -85,7 +85,7 @@ public class GameDetailsFrame extends JFrame
 			{
 				if(game.userTurn)
 				{
-					if(WordListHandler.loadList(game.listURL, GameDetailsFrame.this))
+					if(WordListHandler.loadList(game.getListURL(), GameDetailsFrame.this))
 					{
 						frame.openGame(game);
 						setVisible(false);
