@@ -89,8 +89,6 @@ public class GameDetailsFrame extends JFrame
 					{
 						frame.openGame(game);
 						setVisible(false);
-						
-						System.out.println(game.isRequest);
 					}
 					else {
 						JOptionPane.showMessageDialog(GameDetailsFrame.this, "Unable to download word list.");

@@ -252,7 +252,7 @@ public class GameHandler
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			
-			writer.println("DELGAME:" + VocabCrack.instance().account.username + ":" + friend + ":" + type + (type == 1 ? index[0] : ""));
+			writer.println("DELGAME:" + VocabCrack.instance().account.username + ":" + friend + ":" + type + ":" + (type == 1 ? index[0] : ""));
 			writer.flush();
 			
 			String[] response = reader.readLine().trim().split(":");
@@ -280,7 +280,7 @@ public class GameHandler
 				}
 				else if(type == 1 /*Past*/)
 				{
-					panel.displayedPast.remove(index[0]);
+					panel.displayedPast.remove((int)index[0]);
 					panel.resetList();
 				}
 				

@@ -461,9 +461,6 @@ public class GameFrame extends JFrame implements WindowListener
 		{
 			game.activeWords = WordDataHandler.createWordSet();
 		}
-		else {
-			System.out.println(game.activeWords + " " + wordIndex);
-		}
 		
 		setVisible(true);
 		
