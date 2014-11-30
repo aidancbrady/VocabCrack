@@ -498,8 +498,9 @@ public class FriendHandler
 				
 				int won = Integer.parseInt(response[2]);
 				int lost = Integer.parseInt(response[3]);
+				long login = Long.parseLong(response[4]);
 				
-				frame.acct = new Account(friend, response[1], "password").setGamesWon(won).setGamesLost(lost);
+				frame.acct = new Account(friend, response[1], "password").setGamesWon(won).setGamesLost(lost).setLastLogin(login);
 				
 				frame.setAccountData();
 				
