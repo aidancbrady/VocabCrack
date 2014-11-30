@@ -270,6 +270,8 @@ public class Game
 			return;
 		}
 		
+		activeWords.clear();
+		
 		for(String word : split)
 		{
 			activeWords.add(word.trim());

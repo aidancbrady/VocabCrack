@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.aidancbrady.vocab.Game;
 import com.aidancbrady.vocab.Utilities;
+import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.panels.ActiveGamePanel;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 import com.aidancbrady.vocab.panels.GamesPanel;
@@ -34,8 +35,8 @@ public class VocabFrame extends JFrame implements WindowListener
 	public OptionsPanel options;
 	public ActiveGamePanel activeGame;
 	
-	public NewFriendFrame newFrame;
-	public UserDetailsFrame userDetailsFrame;
+	public NewFriendDialog newFrame;
+	public UserDetailsDialog userDetailsFrame;
 	public GameDetailsFrame gameDetailsFrame;
 	public GameFrame gameFrame;
 	
@@ -45,6 +46,8 @@ public class VocabFrame extends JFrame implements WindowListener
 		setSize(400, 600);
 		
 		setVisible(true);
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		setIconImage(VocabCrack.instance().icon.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		addWindowListener(this);
@@ -57,8 +60,6 @@ public class VocabFrame extends JFrame implements WindowListener
 		addPanel(newGame = new NewGamePanel(this)).setVisible(false);
 		addPanel(options = new OptionsPanel(this)).setVisible(false);
 		addPanel(activeGame = new ActiveGamePanel(this)).setVisible(false);
-		
-		//openGame(Game.DEFAULT);
 		
 		Utilities.loadData();
 	}
@@ -122,7 +123,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	{
 		if(newFrame == null)
 		{
-			newFrame = new NewFriendFrame(this);
+			newFrame = new NewFriendDialog(this);
 		}
 		else {
 			newFrame.setVisible(true);
@@ -134,7 +135,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	{
 		if(userDetailsFrame == null)
 		{
-			userDetailsFrame = new UserDetailsFrame(this);
+			userDetailsFrame = new UserDetailsDialog(this);
 		}
 		else {
 			userDetailsFrame.toFront();

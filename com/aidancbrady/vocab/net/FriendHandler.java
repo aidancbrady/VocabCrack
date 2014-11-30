@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 
 import com.aidancbrady.vocab.Account;
 import com.aidancbrady.vocab.VocabCrack;
-import com.aidancbrady.vocab.frames.NewFriendFrame;
-import com.aidancbrady.vocab.frames.UserDetailsFrame;
+import com.aidancbrady.vocab.frames.NewFriendDialog;
+import com.aidancbrady.vocab.frames.UserDetailsDialog;
 import com.aidancbrady.vocab.panels.FriendsPanel;
 
 public class FriendHandler 
@@ -252,7 +252,7 @@ public class FriendHandler
 		}
 	}
 	
-	public static void updateSearch(NewFriendFrame frame)
+	public static void updateSearch(NewFriendDialog frame)
 	{
 		String query = frame.searchField.getText().trim();
 		
@@ -331,7 +331,7 @@ public class FriendHandler
 		}
 	}
 	
-	public static void sendRequest(String friend, NewFriendFrame frame)
+	public static void sendRequest(String friend, NewFriendDialog frame)
 	{
 		frame.setLoading(true);
 		
@@ -477,7 +477,7 @@ public class FriendHandler
 		}
 	}
 	
-	public static void getInfo(String friend, UserDetailsFrame frame)
+	public static void getInfo(String friend, UserDetailsDialog frame)
 	{
 		Socket socket = new Socket();
 		

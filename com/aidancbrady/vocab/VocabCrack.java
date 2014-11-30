@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import com.aidancbrady.vocab.frames.VocabFrame;
@@ -14,6 +15,8 @@ import com.aidancbrady.vocab.frames.VocabFrame;
 public class VocabCrack 
 {
 	private static VocabCrack instance = new VocabCrack();
+	
+	public ImageIcon icon = new ImageIcon(getClass().getResource("/icon.png"));
 	
 	public static String serverIP = "localhost";
 	public static int serverPort = 26830;
@@ -64,7 +67,7 @@ public class VocabCrack
 	private void initMacOSX()
 	{
 		try {
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "PeerChess");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "VocabCrack");
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		} catch(Exception e) {}
 	}

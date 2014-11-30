@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.Texture;
 
-public class GameFrame extends JFrame implements WindowListener
+public class GameFrame extends JDialog implements WindowListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -74,6 +75,8 @@ public class GameFrame extends JFrame implements WindowListener
 	
 	public GameFrame(VocabFrame f)
 	{
+		super(f);
+		
 		frame = f;
 		
 		setTitle("Game with " + Utilities.getRemoteUser(game));

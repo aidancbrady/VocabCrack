@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,7 +19,7 @@ import com.aidancbrady.vocab.net.FriendHandler;
 import com.aidancbrady.vocab.net.GameHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
-public class UserDetailsFrame extends JFrame
+public class UserDetailsDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -41,8 +41,10 @@ public class UserDetailsFrame extends JFrame
 	public JLabel lossesLabel;
 	public JLabel loginLabel;
 	
-	public UserDetailsFrame(VocabFrame f)
+	public UserDetailsDialog(VocabFrame f)
 	{
+		super(f, "User Details");
+		
 		frame = f;
 		
 		setTitle("User Details");
@@ -85,7 +87,7 @@ public class UserDetailsFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(JOptionPane.showConfirmDialog(UserDetailsFrame.this, "Start a game with " + acct.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
+				if(JOptionPane.showConfirmDialog(UserDetailsDialog.this, "Start a game with " + acct.username + "?", "Confirm Game", JOptionPane.YES_NO_OPTION) == 0)
 				{
 					if(GameHandler.confirmGame(acct.username, frame.friends))
 					{

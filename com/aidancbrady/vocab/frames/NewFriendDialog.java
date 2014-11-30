@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import com.aidancbrady.vocab.net.FriendHandler;
 
-public class NewFriendFrame extends JFrame
+public class NewFriendDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -40,8 +40,10 @@ public class NewFriendFrame extends JFrame
 	
 	public Vector<String> displayedList = new Vector<String>();
 
-	public NewFriendFrame(VocabFrame f)
+	public NewFriendDialog(VocabFrame f)
 	{
+		super(f, "New Friend");
+		
 		frame = f;
 		
 		setTitle("New Friend");
@@ -134,7 +136,7 @@ public class NewFriendFrame extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent arg0)
 		{
-			FriendHandler.updateSearch(NewFriendFrame.this);
+			FriendHandler.updateSearch(NewFriendDialog.this);
 		}
 	}
 	
@@ -144,7 +146,7 @@ public class NewFriendFrame extends JFrame
 		{
 			String name = displayedList.get(friendsList.getSelectedIndex());
 			
-			if(JOptionPane.showConfirmDialog(NewFriendFrame.this, "Are you sure you want to send a friend request to " + name + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
+			if(JOptionPane.showConfirmDialog(NewFriendDialog.this, "Are you sure you want to send a friend request to " + name + "?", "Confirm Request", JOptionPane.YES_NO_OPTION) == 0)
 			{
 				FriendHandler.sendRequest(name, this);
 			}

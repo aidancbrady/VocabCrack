@@ -9,7 +9,7 @@ import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -23,7 +23,7 @@ import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
-public class GameDetailsFrame extends JFrame
+public class GameDetailsFrame extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -43,6 +43,8 @@ public class GameDetailsFrame extends JFrame
 	
 	public GameDetailsFrame(VocabFrame f)
 	{
+		super(f, "User Details");
+		
 		frame = f;
 		
 		setTitle("User Details");
