@@ -67,9 +67,7 @@ public class GameHandler
 					vec.add(g);
 				}
 				
-				panel.displayedGames = vec;
-				panel.displayedList = vec;
-				
+				panel.displayedGames = (Vector<Game>)vec.clone();
 				panel.resetList();
 				
 				return;
@@ -133,9 +131,7 @@ public class GameHandler
 					vec.add(g);
 				}
 				
-				panel.displayedPast = vec;
-				panel.displayedList = vec;
-				
+				panel.displayedPast = (Vector<Game>)vec.clone();
 				panel.resetList();
 				
 				return;

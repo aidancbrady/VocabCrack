@@ -23,7 +23,7 @@ import com.aidancbrady.vocab.VocabCrack;
 import com.aidancbrady.vocab.file.WordListHandler;
 import com.aidancbrady.vocab.tex.AvatarHandler;
 
-public class GameDetailsFrame extends JDialog
+public class GameDetailsDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -41,7 +41,7 @@ public class GameDetailsFrame extends JDialog
 	
 	public JList<String> scoreList;
 	
-	public GameDetailsFrame(VocabFrame f)
+	public GameDetailsDialog(VocabFrame f)
 	{
 		super(f, "User Details");
 		
@@ -87,17 +87,17 @@ public class GameDetailsFrame extends JDialog
 			{
 				if(game.userTurn)
 				{
-					if(WordListHandler.loadList(game.getListURL(), GameDetailsFrame.this))
+					if(WordListHandler.loadList(game.getListURL(), GameDetailsDialog.this))
 					{
 						frame.openGame(game);
 						setVisible(false);
 					}
 					else {
-						JOptionPane.showMessageDialog(GameDetailsFrame.this, "Unable to download word list.");
+						JOptionPane.showMessageDialog(GameDetailsDialog.this, "Unable to download word list.");
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(GameDetailsFrame.this, "It is not your turn!");
+					JOptionPane.showMessageDialog(GameDetailsDialog.this, "It is not your turn!");
 				}
 			}
 		});

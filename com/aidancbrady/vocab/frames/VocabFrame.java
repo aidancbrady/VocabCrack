@@ -37,7 +37,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	
 	public NewFriendDialog newFrame;
 	public UserDetailsDialog userDetailsFrame;
-	public GameDetailsFrame gameDetailsFrame;
+	public GameDetailsDialog gameDetailsFrame;
 	public GameFrame gameFrame;
 	
 	public VocabFrame()
@@ -148,7 +148,7 @@ public class VocabFrame extends JFrame implements WindowListener
 	{
 		if(gameDetailsFrame == null)
 		{
-			gameDetailsFrame = new GameDetailsFrame(this);
+			gameDetailsFrame = new GameDetailsDialog(this);
 		}
 		else {
 			gameDetailsFrame.toFront();

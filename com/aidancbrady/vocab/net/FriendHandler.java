@@ -63,8 +63,7 @@ public class FriendHandler
 					vec.add(new Account(response1[i], true));
 				}
 				
-				panel.displayedFriends = vec;
-				
+				panel.displayedFriends = (Vector<Account>)vec.clone();
 				panel.resetList();
 				
 				return;
@@ -126,8 +125,7 @@ public class FriendHandler
 					vec.add(new Account(split[0], false).setEmail(split[1]));
 				}
 				
-				panel.displayedRequests = vec;
-				
+				panel.displayedRequests = (Vector<Account>)vec.clone();
 				panel.resetList();
 				
 				if(panel.displayedRequests.size() > 0)
@@ -255,11 +253,6 @@ public class FriendHandler
 	public static void updateSearch(NewFriendDialog frame)
 	{
 		String query = frame.searchField.getText().trim();
-		
-		if(query.isEmpty())
-		{
-			return;
-		}
 		
 		if(query.contains(",") || query.contains(":"))
 		{

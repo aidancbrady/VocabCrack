@@ -164,6 +164,9 @@ public class NewFriendDialog extends JDialog
 			displayedList.clear();
 			friendsList.setListData(displayedList);
 		}
+		else {
+			FriendHandler.updateSearch(this);
+		}
 	}
 	
 	public class CloseListener implements ActionListener

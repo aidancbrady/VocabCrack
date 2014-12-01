@@ -306,10 +306,10 @@ public class FriendsPanel extends JPanel
 		
 		if(mode)
 		{
-			displayedList = (Vector<Account>)displayedFriends;
+			displayedList = (Vector<Account>)displayedFriends.clone();
 		}
 		else {
-			displayedList = (Vector<Account>)displayedRequests;
+			displayedList = (Vector<Account>)displayedRequests.clone();
 		}
 		
 		friendsList.setListData(displayedList);
@@ -386,6 +386,8 @@ public class FriendsPanel extends JPanel
 					}
 				}
 			}
+			
+			friendsList.setListData(displayedList);
 		}
 	}
 	

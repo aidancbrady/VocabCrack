@@ -327,10 +327,10 @@ public class GamesPanel extends JPanel
 		
 		if(mode)
 		{
-			displayedList = (Vector<Game>)displayedGames;
+			displayedList = (Vector<Game>)displayedGames.clone();
 		}
 		else {
-			displayedList = (Vector<Game>)displayedPast;
+			displayedList = (Vector<Game>)displayedPast.clone();
 		}
 		
 		gamesList.setListData(displayedList);
@@ -408,6 +408,8 @@ public class GamesPanel extends JPanel
 					}
 				}
 			}
+			
+			gamesList.setListData(displayedList);
 		}
 	}
 	
